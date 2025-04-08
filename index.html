@@ -40,19 +40,6 @@
 
         <hr>
 
-        <b>Chness: Many Player Chess</b>
-        <img class="screenshot" alt="screenshot of a hexagonal chess board in chness" src="assets/chness/1.png" />
-        <img class="screenshot" alt="screenshot of circle chess in chness" src="assets/chness/2.png" />
-        <br>
-        (Aug 2016 - Present)
-        <br>
-        This project is kind of my white whale 🐳
-        <br>
-        <a href="https://play.google.com/store/apps/details?id=com.waeaves.chness">(android)</a>
-        <a href="https://apps.apple.com/us/app/chness-many-player-chess/id6739227141">(ios)</a>
-
-        <hr>
-
         <b>Fifteent, Generalized Sliding Puzzles</b>
         <img class="screenshot" alt="screenshot of fifteent gameplay" src="assets/fifteent/2.png" />
         <img class="screenshot" alt="screenshot of fifteent levels list" src="assets/fifteent/1.png" />
@@ -66,12 +53,35 @@
 
         <hr>
 
+        <b>Chness: Many Player Chess</b>
+        <img class="screenshot" alt="screenshot of a hexagonal chess board in chness" src="assets/chness/1.png" />
+        <img class="screenshot" alt="screenshot of circle chess in chness" src="assets/chness/2.png" />
+        <br>
+        (Aug 2016 - Present)
+        <br>
+        This project is kind of my white whale 🐳
+        <br>
+        <a href="https://play.google.com/store/apps/details?id=com.waeaves.chness">(android)</a>
+        <a href="https://apps.apple.com/us/app/chness-many-player-chess/id6739227141">(ios)</a>
+
+        <hr>
+
         <br><br><br><br>
     </main>
 
     <footer>
         (bye bye! 👋)
     </footer>
+
+    <script>
+        document.querySelectorAll('img').forEach(img => {
+            const a = document.createElement('a');
+            a.href = img.src;
+            a.target = '_blank';
+            img.replaceWith(a);
+            a.appendChild(img);
+        });
+    </script>
 
 </body>
 
