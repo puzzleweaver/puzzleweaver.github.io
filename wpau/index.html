@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<header>
+    <base href="/wpau/">
+
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <title>W P A U</title>
+
+    <nav>
+        <ul>
+            <li><a
+                    href="https://www.simplyrecipes.com/thmb/20YogL0tqZKPaNft0xfsrldDj6k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__simply_recipes__uploads__2010__01__cinnamon-toast-horiz-a-1800-5cb4bf76bb254da796a137885af8cb09.jpg">Toast</a>
+            </li>
+            <li><a
+                    href="https://www.kitchensanctuary.com/wp-content/uploads/2024/09/Hash-Browns-square-FS.jpg">hashbrown</a>
+            </li>
+        </ul>
+    </nav>
+    <img src="img/25.gif" />
+    <img src="img/51.gif" />
+    <img src="img/109.gif" />
+    <h1>What Pokemon Are You ?</h1>
+    <h3>(or your pet)</h3>
+</header>
+
+<body>
+    <main id="app">
+        <section>
+            <header>
+                <h2>
+                    <img src="img/80.gif" />
+                    Enter Your Information
+                    <img src="img/147.gif" />
+                </h2>
+                <h4>(or your pet's)</h4>
+            </header>
+
+            <Aside>
+                <h3>Weight</h3>
+                <input v-model="weight" size="5">
+                <select v-model="weightUnits" @change="setWeightUnits">
+                    <option value="lb">Pounds</option>
+                    <option value="kg">Kilograms</option>
+                </select>
+            </Aside>
+
+            <aside>
+                <h3>Height</h3>
+                <span><input v-model="height" size="5"> Inches</span>
+                <input v-if="heightUnits === 'ft'" v-model="heightInches" size="5">
+                <select v-model="heightUnits" @change="setHeightUnits">
+                    <option value="ft">Feet and Inches</option>
+                    <option value="m">Meters</option>
+                </select>
+            </aside>
+
+            <aside>
+                <h3>Generation</h3>
+                <select v-model="maximumGeneration">
+                    <option value="1">I (Red/Yellow/Blue)</option>
+                    <option value="2">II (Gold/Silver/Crystal)</option>
+                    <option value="3">III (Ruby/Sapphire/Emerald)</option>
+                    <option value="4">IV (Diamond/Pearl/Platinum)</option>
+                    <option value="5">V (Black/White)</option>
+                    <option value="6">VI (X/Y/Z)</option>
+                    <option value="7">VII (Sun/Moon)</option>
+                    <option value="8">VIII (Sword/Shield)</option>
+                </select>
+            </aside>
+
+            <aside>
+                <button @click="calculate()">Calculate</button>
+            </aside>
+            </form>
+        </section>
+
+        <hr>
+
+        <section>
+            <Aside>
+                <p>{{results}}</p>
+            </Aside>
+        </section>
+
+    </main>
+    <script src="main.js"></script>
+</body>
+
+</html>

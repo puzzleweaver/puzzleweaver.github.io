@@ -1,0 +1,21 @@
+body {
+    background-image: url('img/pokeball.png');
+    background-color: rgb(200, 200, 200);
+    background-blend-mode: darken;
+}
+
+header {
+    background-color: white;
+}
+
+Aside {
+    background-color: white;
+}
+
+img {
+    height: 100px;
+    image-rendering: auto;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: -webkit-optimize-contrast;
+}
