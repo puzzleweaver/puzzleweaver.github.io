@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <link rel="stylesheet" href="custom.css">
+
+    <!-- Vue.js-->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <title>Pkmn Png</title>
+    <base href="/pkmn-png/">
+</head>
+
+<body>
+    <header>
+        <h1>PKMN PNG</h1>
+    </header>
+    <main id="app">
+        <h4 class="center">
+            Pokemon Name:&nbsp;
+            <input id="name-input" v-model=name v-on:keyup.enter="loadImages" size="10" style="text-align: center" />
+            <button :onclick=loadImages :disabled=loading>go!</button>
+        </h4>
+        <!-- <p class="center">
+            Only show: <select v-model=generation>
+                <option value=undefined>All</option>
+                <option value="1">I (Red/Yellow/Blue)</option>
+                <option value="2">II (Gold/Silver/Crystal)</option>
+                <option value="3">III (Ruby/Sapphire/Emerald)</option>
+                <option value="4">IV (Diamond/Pearl/Platinum)</option>
+                <option value="5">V (Black/White)</option>
+                <option value="6">VI (X/Y/Z)</option>
+                <option value="7">VII (Sun/Moon)</option>
+                <option value="8">VIII (Sword/Shield)</option>
+            </select>
+        </p> -->
+
+        <div v-if="loading" class="center">
+            <img src="img/loading.gif" />
+        </div>
+        <div v-else-if="loadingFailed" class="center">
+            <p>Failed to load :(</p>
+            <img src="img/failed.gif" />
+            <p>(it was probably a typo, check your spelling)</p>
+        </div>
+        <p v-else>
+            <span v-for="entry in Object.entries(images)">
+                <image-card :heading=entry[0] :data=entry[1]></image-card>
+            </span>
+        </p>
+    </main>
+
+    <template id="image-card-template">
+        <span v-for="game of Object.entries(data)">
+            <span v-for="url of Object.entries(game[1])">
+                <!-- <span class="image-card-container"> -->
+                <single-asset :url=url[1]></single-asset>
+            </span>
+        </span>
+    </template>
+
+    <template id="single-asset-template">
+        <div v-if="valid" class="image-card-container" class="image-extras">
+            <img :title=details :src=url class="api-img" :onclick="toggleExpanded" />
+            <div :style=style class="image-extras">
+                <a download :href=url>
+                    <button class="img-button">
+                        Download <u>&#x2193;</u>
+                    </button>
+                </a>
+                <br>
+                <a :href=crossStitchUrl>
+                    <button class="img-button">
+                        Pattern >
+                    </button>
+                </a>
+            </div>
+        </div>
+    </template>
+    <script src="dist/datalist.js"></script>
+    <script src="dist/form.js"></script>
+</body>
+
+
+</html>

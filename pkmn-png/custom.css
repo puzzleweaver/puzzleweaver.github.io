@@ -1,0 +1,47 @@
+:root {
+    --accent: rgb(190, 0, 0);
+    --accent-hover: rgb(230, 0, 0);
+    --accent-bg: rgb(255, 218, 218);
+}
+
+.image-card-container {
+    /* border: 1px solid black;
+    border-radius: 10px; */
+    display: inline-block;
+}
+
+.image-extras {
+    width: 150px;
+    opacity: 1;
+    z-index: 100;
+    background-color: white;
+    border: 1px solid black;
+}
+
+.image-extras.hidden {
+    opacity: 0;
+    -webkit-transition: opacity 0.5s ease-in-out;
+    -moz-transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.center {
+    text-align: center;
+}
+
+.img-button {
+    width: 100%;
+}
+
+.api-img {
+    width: 150px;
+    border: dashed 1px black;
+}
+
+img {
+    width: 30%;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    /* calc(min(10vw, 10vh)); */
+    /* calc(min(10vw, 10vh)); */
+}
