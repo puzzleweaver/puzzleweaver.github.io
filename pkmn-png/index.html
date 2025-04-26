@@ -21,8 +21,10 @@
     <main id="app">
         <h4 class="center">
             Pokemon Name:&nbsp;
-            <input id="name-input" v-model=name v-on:keyup.enter="loadImages" size="10" style="text-align: center" />
-            <button :onclick=loadImages :disabled=loading>go!</button>
+            <input id="name-input" v-model=name v-on:keyup.enter="loadImages" size="10"
+                style="text-align: center; line-height: 1.5rem" />
+            <button :onclick=loadImages :disabled=loading class="bar-button">go!</button>
+            <button :onclick=randomize class="bar-button">&#x2684;</button>
         </h4>
         <!-- <p class="center">
             Only show: <select v-model=generation>
@@ -64,20 +66,19 @@
 
     <template id="single-asset-template">
         <div v-if="valid" class="image-card-container" class="image-extras">
-            <img :title=details :src=url class="api-img" :onclick="toggleExpanded" />
-            <div :style=style class="image-extras">
-                <a download :href=url>
-                    <button class="img-button">
-                        Download <u>&#x2193;</u>
-                    </button>
-                </a>
-                <br>
-                <a :href=crossStitchUrl>
-                    <button class="img-button">
-                        Pattern >
-                    </button>
-                </a>
-            </div>
+            <!-- <img src="img/transparent-bg.png" class="api-img-bg" /> -->
+            <img :title=details :src=url class="api-img" />
+            <br>
+
+            <a style="text-align: center; width: 100%" :href=crossStitchUrl>
+                Generate Pattern
+            </a>
+            <br>
+
+            <button :id=`copy-${url}` class="api-button" :onclick=copy>copy</button>
+            <a download :href=url>
+                <button class="api-button">save</button>
+            </a>
         </div>
     </template>
     <script src="dist/datalist.js"></script>

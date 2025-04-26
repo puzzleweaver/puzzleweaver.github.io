@@ -8,36 +8,37 @@
     /* border: 1px solid black;
     border-radius: 10px; */
     display: inline-block;
-}
-
-.image-extras {
-    width: 150px;
-    opacity: 1;
-    z-index: 100;
-    background-color: white;
-    border: 1px solid black;
-}
-
-.image-extras.hidden {
-    opacity: 0;
-    -webkit-transition: opacity 0.5s ease-in-out;
-    -moz-transition: opacity 0.5s ease-in-out;
-    transition: opacity 0.5s ease-in-out;
+    overflow-wrap: break-word;
+    width: calc(25% - 5px);
+    margin-right: 5px;
+    margin-bottom: 10px;
 }
 
 .center {
     text-align: center;
 }
 
-.img-button {
-    width: 100%;
+.api-button {
+    /* nothing for now... */
+    margin: 5px;
 }
 
+.bar-button {
+    line-height: 1.5rem;
+    margin-left: 5px;
+}
+
+/* a "content" image */
 .api-img {
-    width: 150px;
+    width: 100%;
     border: dashed 1px black;
+    background: conic-gradient(white 90deg, #eee 90deg 180deg, white 180deg 270deg, #eee 270deg);
+    background-repeat: repeat;
+    background-size: 30px 30px;
+    background-position: top-left;
 }
 
+/* loading/failed image */
 img {
     width: 30%;
     image-rendering: pixelated;
