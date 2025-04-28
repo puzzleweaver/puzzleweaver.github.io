@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <link rel="stylesheet" href="../custom.css">
+
+    <title>Pattern Maker</title>
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+</head>
+
+<body>
+    <header>
+        <h1>Pixel Pattern Maker</h1>
+        <sub>by Emma with Love!</sub>
+    </header>
+    <main>
+        <div class="notice" style="text-align: center">
+            <h3>Choose an Image:</h3>
+            <p>
+                <input id="image-url-input" type="text" placeholder="paste image url">
+                <button onclick="useUrl()">From URL &#x2192</button>
+            </p>
+            <p>
+                <button onclick="document.getElementById('file-input').click()">
+                    Upload Sprite PNG <u>&#x2191</u>
+                </button>
+            </p>
+            <p>
+                <a href="https://puzzleweaver.github.io/pkmn-png">
+                    <button>Pick a Pokemon Sprite</button>
+                </a>
+            </p>
+        </div>
+    </main>
+
+    <input id="file-input" type="file" accept=".png" oninput="useFile()" style="display:none" />
+
+    <footer>
+        If you're having any issues or have suggestions, feel free to contact me at
+        <a href="mailto:emma.e.weaver1@gmail.com">
+            emma.e.weaver1@gmail.com
+        </a> :3
+        <br>
+
+    </footer>
+
+    <script src="./scripts/choose-image.js"></script>
+
+</body>
+
+</html>

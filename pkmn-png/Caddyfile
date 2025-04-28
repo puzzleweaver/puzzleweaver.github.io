@@ -1,4 +1,0 @@
-localhost {
-	root * .
-	file_server browse
-}

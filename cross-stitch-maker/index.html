@@ -1,14 +1,201 @@
 <!DOCTYPE html>
-
 <html>
 
 <head>
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <link rel="stylesheet" href="custom.css">
+
+    <!-- Vue.js-->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+    <!-- Html 2 Canvas (for exporting patterns) -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+
     <title>Pattern Maker</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <base href="/cross-stitch-maker/">
 </head>
 
 <body>
-    <h1 style="text-align: center">Come back later...</h1>
+    <header>
+        <h1>Pixel Pattern Maker</h1>
+        <sub>by Emma with Love!</sub>
+    </header>
+
+    <main id="vue-app">
+        <p style="width: 100%; text-align: center">
+            <a id="link-back" :href="`./select-image?img=${imgUrl}`">
+                <button>&#x2190; Select Different Image</button>
+            </a>
+        </p>
+        <!-- OLD, Shows image and back button -->
+        <!-- <section
+                style="width: 100%; display: inline-flex; text-align: center; justify-content: center; align-items: center">
+                <span style="display: inline-flex; flex-direction: column; margin-right: 10px">
+                    you're using this image.
+                    <button @click="reset">&#x2190; Go Back</button>
+                </span>
+                <img :src=imageUrl style="width: 100px; border: 1px solid black">
+            </section> -->
+
+        <div v-if="failed" style="width: 100%; display: flex; justify-content: center">
+            <div class="warning">
+                <p>
+                    Image data failed to load.
+                </p>
+                <hr style="background-color: red">
+                <p style="white-space: pre-line">
+                    {{error}}
+                </p>
+            </div>
+        </div>
+        <div v-else>
+            <details>
+                <summary>
+                    Color Palette
+                </summary>
+                <div class="warning">
+                    Editing colors will be added in a future update.
+                </div>
+                <aside>
+                    <img :src="imgUrl" style="width: 100%; height: auto;  image-rendering: pixelated" />
+                </aside>
+                <p>
+                    <span v-for="color in getColors()">
+                        <palette-color :color="color" symbolStyle="numbers"></palette-color>
+                    </span>
+                </p>
+            </details>
+
+            <details>
+                <aside class="center">
+                    Preview
+                    <img v-if="valid" :src="resultURL"></img>
+                    <div v-else class="loading-pattern-preview">
+                        <spinner></spinner>
+                    </div>
+                </aside>
+                <summary>Page Settings</summary>
+                <p>
+                    Page Orientation:
+                    <select v-model="pageOrientation">
+                        <option value="landscape">Landscape</option>
+                        <option value="portrait">Portrait</option>
+                    </select>
+                </p>
+                <p>
+                    Show lines:
+                    <input v-model="showLines" type="checkbox" />
+                </p>
+                <p>
+                    Show center:
+                    <input v-model="showCenter" type="checkbox" />
+                </p>
+                <p>
+                    Symbol style:
+                    <select v-model="symbolStyle">
+                        <option value="none">Off</option>
+                        <option value="symbols">Symbols</option>
+                        <option value="numbers">Numbers</option>
+                    </select>
+                </p>
+                </section>
+            </details>
+
+
+            <h4 style="text-align: center">
+                Pattern:
+                &nbsp;
+                <a download="pattern.png" :href="resultURL">
+                    <span>
+                        <button :disabled="!valid">png <u>&#8595;</u></button>
+                    </span>
+                </a>
+            </h4>
+
+            <div style="text-align: center">
+                <img v-if="valid" :src="resultURL" class="main-preview"></img>
+                <div v-else class="main-preview">
+                    <spinner></spinner>
+                </div>
+            </div>
+        </div>
+
+        <!-- HIDDEN actual pattern-->
+        <div style="width: 0; height: 0; overflow: hidden">
+            <div id="pattern" :class="`pattern-container-${pageOrientation}`">
+                <span style="display: inline-block">
+                    <canvas id="result-canvas"></canvas>
+                </span>
+
+                <div id="pattern-key" :class="`pattern-key-${pageOrientation}`">
+                    <div>{{getDescription()}}</div>
+                    <span v-for="color in getColors()">
+                        <color-key :color="color" :symbolStyle="symbolStyle"></color-key>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        If you're having any issues or have suggestions, feel free to contact me at
+        <a href="mailto:emma.e.weaver1@gmail.com">
+            emma.e.weaver1@gmail.com
+        </a> :3
+    </footer>
+
+    <template id="palette-color-template">
+        <p
+            style="margin: 5px; background-color: white; border: 1px solid black; border-radius: 10px; display: inline-flex; flex-direction: column; padding: 5px">
+            <span style="display: inline-flex; align-items: center">
+                <color-tile :color="threadColor" :overlay="overlay"></color-tile>
+                {{description}}
+            </span>
+            <small style="display: inline-flex; justify-content: center">
+                {{longDescription}}
+                <!-- <br>
+                &#x2192;
+                <span v-for="color in rawColors">
+                    <color-tile :color=color :overlay=""></color-tile>
+                </span> -->
+            </small>
+        </p>
+    </template>
+
+    <template id="color-key-template">
+        <span class="color-key-container">
+            <color-tile :color=threadColor :overlay=overlay></color-tile>
+            {{description}}
+        </span>
+    </template>
+
+    <template id="color-tile-template">
+        <span class="color-tile" :style="`background-color: ${color}`">
+            <span :style="`
+                    display: inline-flex;
+                    justify-content: center;
+                    align-items: center;
+                    color: ${overlayColor}; width: 100%;
+                `">
+                {{overlay}}
+            </span>
+        </span>
+    </template>
+
+    <template id="spinner-template">
+        <div class="spinner-container">
+            <div class="spinner"></div>
+        </div>
+    </template>
+
+    <script type="module" src="./dist/dmc.js"></script>
+    <script type="module" src="./dist/image.js"></script>
+    <script type="module" src="./dist/color.js"></script>
+    <script type="module" src="./dist/pattern-renderer.js"></script>
+    <script type="module" src="./dist/vue-app.js"></script>
+    <script type="module" src="./dist/run.js"></script>
 </body>
 
 </html>

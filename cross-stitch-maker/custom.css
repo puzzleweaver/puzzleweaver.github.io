@@ -1,0 +1,134 @@
+:root {
+    --accent: rgb(104, 0, 190);
+    --accent-hover: rgb(134, 0, 230);
+    --accent-bg: rgb(237, 218, 255);
+}
+
+.palette-color-container {
+    display: inline-flex;
+    background-color: white;
+    border-radius: 10px;
+    justify-content: center;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.color-tile {
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 2rem;
+    height: 2rem;
+    display: inline-flex;
+    margin-right: 10px;
+}
+
+.color-key-container {
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: center;
+    margin-right: 10px;
+    padding: 5px;
+}
+
+.pattern-key-portrait,
+.pattern-key-landscape {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 30px;
+}
+
+.pattern-key-portrait {
+    width: 1200px;
+    height: 400px;
+}
+
+.pattern-key-landscape {
+    width: 400px;
+    height: 1200px;
+}
+
+.pattern-container-portrait,
+.pattern-container-landscape {
+    display: inline-flex;
+}
+
+.pattern-container-portrait {
+    width: 1200px;
+    height: 1600px;
+    flex-direction: column;
+}
+
+.pattern-container-landscape {
+    width: 1600px;
+    height: 1200px;
+    flex-direction: row;
+}
+
+.loading-pattern-preview {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.main-preview {
+    height: 50vh;
+    width: auto;
+    border: 1px dashed black;
+    border-radius: 10px;
+}
+
+.warning {
+    padding: 10px;
+    border: 1px solid red;
+    border-radius: 5px;
+    background-color: white;
+    color: red;
+    width: 60%;
+    text-align: left;
+}
+
+.spinner-container {
+    width: 100%;
+    height: 100%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner::before {
+    content: "";
+    display: inline-flex;
+    top: 50%;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    margin-top: -12px;
+    margin-left: -12px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-bg);
+    border-top-color: var(--accent);
+    animation: spinner 600ms linear infinite;
+}
+
+
+
+/* .image-preview {
+    width: 100%;
+} */
+
+aside {
+    max-width: 30vw;
+}
+
+.center {
+    text-align: center;
+}
