@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="custom.css">
 
     <!-- Vue.js-->
-    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
     <!-- Html 2 Canvas (for exporting patterns) -->
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
@@ -29,15 +29,6 @@
                 <button>&#x2190; Select Different Image</button>
             </a>
         </p>
-        <!-- OLD, Shows image and back button -->
-        <!-- <section
-                style="width: 100%; display: inline-flex; text-align: center; justify-content: center; align-items: center">
-                <span style="display: inline-flex; flex-direction: column; margin-right: 10px">
-                    you're using this image.
-                    <button @click="reset">&#x2190; Go Back</button>
-                </span>
-                <img :src=imageUrl style="width: 100px; border: 1px solid black">
-            </section> -->
 
         <div v-if="failed" style="width: 100%; display: flex; justify-content: center">
             <div class="warning">
@@ -53,46 +44,66 @@
         <div v-else>
             <details>
                 <summary>
-                    Color Palette
+                    Adjust Colors
                 </summary>
-                <div class="warning">
-                    Editing colors will be added in a future update.
-                </div>
-                <aside>
-                    <img :src="imgUrl" style="width: 100%; height: auto;  image-rendering: pixelated" />
-                </aside>
-                <p>
-                    <span v-for="color in getColors()">
-                        <palette-color :color="color" symbolStyle="numbers"></palette-color>
+                <div style="display: flex; flex-direction: row;">
+                    <span
+                        style="display: inline-flex; flex-direction: column; border-radius: 10px; margin: 10px; padding: 10px; background-color: white; text-align: center">
+                        Original Image
+                        <img id="original-image" style="width: 100%; height: auto" />
                     </span>
+                    <span
+                        style="display: inline-flex; flex-direction: column; border-radius: 10px; margin: 10px; padding: 10px; background-color: white; text-align: center">
+                        Threads Preview
+                        <img id="color-preview" style="width: 100%; height: auto" />
+                        <div v-if="!valid" style="position: relative; top: -50%; height: 0px">
+                            <spinner style="left: 50%"></spinner>
+                        </div>
+                    </span>
+                </div>
+
+                If the palette doesn't line up quite right, adjusting the image slightly can usually
+                fix it.
+                <p class="setting">
+                    brightness:<input type="number" v-model="tweak1" min="-10" max="10" step=1>
+                    redness: <input type="number" v-model="tweak2" min="-10" max="10" step=1>
+                    blueness: <input type="number" v-model="tweak3" min="-10" max="10" step=1>
+                    <button :onclick="resetTweaks" style="line-height: 1rem">reset</button>
                 </p>
+                <!-- <p>
+                    <span v-for="color in colors">
+                        <palette-color :color="color" :symbol-style="symbolStyle"></palette-color>
+                    </span>
+                </p> -->
             </details>
 
             <details>
-                <aside class="center">
-                    Preview
-                    <img v-if="valid" :src="resultURL"></img>
-                    <div v-else class="loading-pattern-preview">
-                        <spinner></spinner>
+                <aside class="center" style="background-color: white; border: none">
+                    Page Preview
+                    <div style="border: 1px dashed black">
+                        <img v-if="valid" :src="resultURL"></img>
+                        <div v-else class="loading-pattern-preview">
+                            <spinner></spinner>
+                        </div>
                     </div>
                 </aside>
                 <summary>Page Settings</summary>
-                <p>
+                <p class="setting">
                     Page Orientation:
                     <select v-model="pageOrientation">
                         <option value="landscape">Landscape</option>
                         <option value="portrait">Portrait</option>
                     </select>
                 </p>
-                <p>
+                <p class="setting">
                     Show lines:
                     <input v-model="showLines" type="checkbox" />
                 </p>
-                <p>
-                    Show center:
-                    <input v-model="showCenter" type="checkbox" />
+                <p class="setting">
+                    Use Less Ink:
+                    <input v-model="saveInk" type="checkbox" />
                 </p>
-                <p>
+                <p class="setting">
                     Symbol style:
                     <select v-model="symbolStyle">
                         <option value="none">Off</option>
@@ -102,7 +113,6 @@
                 </p>
                 </section>
             </details>
-
 
             <h4 style="text-align: center">
                 Pattern:
@@ -123,20 +133,23 @@
         </div>
 
         <!-- HIDDEN actual pattern-->
-        <div style="width: 0; height: 0; overflow: hidden">
+        <div style="overflow: hidden; width: 0x; height: 0px">
             <div id="pattern" :class="`pattern-container-${pageOrientation}`">
                 <span style="display: inline-block">
                     <canvas id="result-canvas"></canvas>
                 </span>
-
                 <div id="pattern-key" :class="`pattern-key-${pageOrientation}`">
-                    <div>{{getDescription()}}</div>
-                    <span v-for="color in getColors()">
-                        <color-key :color="color" :symbolStyle="symbolStyle"></color-key>
+                    <div>{{description}}</div>
+                    <span v-for="color in colors">
+                        <color-key :color="color" :symbol-style="symbolStyle" :save-ink="saveInk"></color-key>
                     </span>
                 </div>
             </div>
         </div>
+
+        <!-- HIDDEN canvases for color comparisons -->
+        <canvas id="original-image-canvas" style="display: none"></canvas>
+        <canvas id="color-preview-canvas" style="display: none"></canvas>
     </main>
 
     <footer>
@@ -147,40 +160,45 @@
     </footer>
 
     <template id="palette-color-template">
-        <p
-            style="margin: 5px; background-color: white; border: 1px solid black; border-radius: 10px; display: inline-flex; flex-direction: column; padding: 5px">
-            <span style="display: inline-flex; align-items: center">
-                <color-tile :color="threadColor" :overlay="overlay"></color-tile>
+        <span style="display: inline-flex; flex-direction: column; margin: 5px; max-width: 45%; border: none; background-color: white;
+            border-radius: 10px; padding: 5px; align-items: center; justify-content: center">
+            <div :onclick="toggleExpanded" style="user-select: none; display: inline-flex; align-items: center">
+                <color-tile :color="threadColor" overlay="" :save-ink="false"></color-tile>
                 {{description}}
-            </span>
-            <small style="display: inline-flex; justify-content: center">
-                {{longDescription}}
-                <!-- <br>
-                &#x2192;
-                <span v-for="color in rawColors">
-                    <color-tile :color=color :overlay=""></color-tile>
-                </span> -->
-            </small>
-        </p>
+                &nbsp;
+                {{expanded ? '&#x23F6;' : '&#x23F7'}}
+            </div>
+            <div v-if="expanded">
+                <div style="border-top: 1px solid black; margin-top: 10px; padding-bottom: 10px">
+                    {{longDescription}}
+                </div>
+                <div style="display: inline-flex; flex-direction: row; overflow: scroll">
+                    <span style="padding-right: 10px">used&nbsp;for:</span>
+                    <span v-for="color in rawColors">
+                        <color-tile :color="color" :save-ink="false"></color-tile>
+                    </span>
+                </div>
+            </div>
+        </span>
     </template>
 
     <template id="color-key-template">
-        <span class="color-key-container">
-            <color-tile :color=threadColor :overlay=overlay></color-tile>
-            {{description}}
+        <span class="color-key-container" style="flex-direction: column">
+            <div>
+                <color-tile :color="threadColor" :overlay="overlay" :save-ink="saveInk"></color-tile>
+                {{description}}
+            </div>
+            <!-- <small>{{longDescription}}</small> -->
         </span>
     </template>
 
     <template id="color-tile-template">
-        <span class="color-tile" :style="`background-color: ${color}`">
-            <span :style="`
-                    display: inline-flex;
-                    justify-content: center;
-                    align-items: center;
-                    color: ${overlayColor}; width: 100%;
-                `">
-                {{overlay}}
-            </span>
+        <span class="color-tile" :style="`
+            background-color: ${color.toString()};
+            color: ${overlayColor};
+            z-index: 2;
+        `">
+            {{overlay}}
         </span>
     </template>
 
@@ -190,6 +208,7 @@
         </div>
     </template>
 
+    <script type="module" src="./dist/oklab.js"></script>
     <script type="module" src="./dist/dmc.js"></script>
     <script type="module" src="./dist/image.js"></script>
     <script type="module" src="./dist/color.js"></script>

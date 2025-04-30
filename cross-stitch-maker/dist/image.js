@@ -46,7 +46,7 @@ export class UrlHandler {
      */
     static async elementToUrl(elementId) {
         // @ts-ignore
-        const promise = html2canvas(document.getElementById(elementId), { allowTaint: false });
+        const promise = html2canvas(document.getElementById(elementId), { allowTaint: true });
         return promise.then((canvas) => canvas.toDataURL());
     }
 }
@@ -70,6 +70,9 @@ export class PixelImage {
         image.crossOrigin = "";
         document.body.appendChild(image);
         throw Error("Unimplemented.");
+    }
+    adjust(tweak1, tweak2, tweak3) {
+        return new PixelImage(this.colors.map((column) => column.map(pixel => pixel.adjust(tweak1, tweak2, tweak3))), this.width, this.height);
     }
     /**
      * returns the non-transparent bounds of the image.
@@ -124,41 +127,40 @@ export class PixelImage {
         return count;
     }
     /**
-     * Counts how many times each color appears in the image.
+     * gets the list of all colors present in the image.
      */
-    collectColors() {
-        var _a;
-        // this mess is working around javascripts BUSTED maps.
-        const indexByColor = {};
-        const collectedColors = [];
-        function getIndex(color) {
-            const key = color.toString();
-            if (indexByColor[key] === undefined) {
-                indexByColor[key] = collectedColors.length;
-                collectedColors.push(color);
-            }
-            return indexByColor[key];
-        }
-        // iterate over each pixel to count them by color.
-        const counts = [];
+    getColors() {
+        const indexedColors = {};
         for (const colorColumn of this.colors) {
             for (const color of colorColumn) {
                 if (color.isEmpty())
                     continue;
-                const index = getIndex(color);
-                counts[index] = ((_a = counts[index]) !== null && _a !== void 0 ? _a : 0) + 1;
+                indexedColors[color.toString()] = color;
             }
         }
-        return [
-            collectedColors,
-            counts,
-        ];
+        return Object.values(indexedColors);
     }
-    getPaletteColor(palette, x, y) {
+    /**
+     * Returns the color of the image, or undefined if the pixel is empty or out of bounds.
+     */
+    getColor(x, y) {
         if (x < 0 || y < 0 || x >= this.width || y >= this.height) {
             return undefined;
         }
-        const rawColor = this.colors[x][y];
+        const ret = this.colors[x][y];
+        if (ret.isEmpty())
+            return undefined;
+        return ret;
+    }
+    /**
+     * Using a palette, get the PaletteColor at (x, y).
+     *
+     * Returns undefined if (x, y) is out of bounds or if the raw color isn't mapped by the palette.
+     */
+    getPaletteColor(palette, x, y) {
+        const rawColor = this.getColor(x, y);
+        if (rawColor === undefined)
+            return undefined;
         for (const color of palette.colors) {
             if (color.includes(rawColor))
                 return color;
@@ -168,12 +170,17 @@ export class PixelImage {
 }
 /** Populates all image tags with a specified classname with a given asset. */
 export class PreviewPopulator {
-    static apply(classname, src) {
+    static applyToClass(classname, src) {
         const elements = document.getElementsByClassName(classname);
         const patternPreviews = elements;
         for (const preview of patternPreviews) {
             preview.src = src;
         }
+    }
+    static applyCanvas(prefix) {
+        const element = document.getElementById(prefix);
+        const canvas = document.getElementById(`${prefix}-canvas`);
+        element.src = canvas.toDataURL();
     }
 }
 /**

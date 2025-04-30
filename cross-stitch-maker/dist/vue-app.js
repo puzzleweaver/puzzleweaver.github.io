@@ -1,10 +1,10 @@
-import { Palette } from "./color.js";
-import { UrlHandler } from "./image.js";
-import { PatternRenderer } from "./pattern-renderer.js";
+import { Palette, PixelColor, ThreadColor } from "./color.js";
+import { PreviewPopulator, UrlHandler } from "./image.js";
+import { PatternRenderer, PatternRendererColorGetter } from "./pattern-renderer.js";
 import { createPatternImage } from "./run.js";
 export function mountApp() {
     // @ts-ignore
-    const { createApp, ref, watch, onUpdated, onMounted } = Vue;
+    const { createApp, ref, watch, onUpdated, onMounted, computed } = Vue;
     const app = createApp({
         setup() {
             const image = ref(undefined);
@@ -24,12 +24,15 @@ export function mountApp() {
                     ].join("\n\n");
                 });
             });
-            // settings
+            // user-selected settings
             const palette = ref(undefined);
             const showLines = ref(true);
-            const showCenter = ref(true);
-            const symbolStyle = ref("none");
+            const symbolStyle = ref("numbers");
             const pageOrientation = ref("landscape");
+            const saveInk = ref(true);
+            const tweak1 = ref(0);
+            const tweak2 = ref(0);
+            const tweak3 = ref(0);
             // calculated/derived:
             const valid = ref(true);
             const error = ref(undefined);
@@ -38,50 +41,92 @@ export function mountApp() {
             // re-render if parameters change.
             watch(palette, () => invalidate());
             watch(showLines, () => invalidate());
-            watch(showCenter, () => invalidate());
             watch(symbolStyle, () => invalidate());
             watch(pageOrientation, () => invalidate());
-            const invalidate = () => valid.value = false;
+            watch(saveInk, () => invalidate());
+            watch(tweak1, () => { invalidate(true); });
+            watch(tweak2, () => { invalidate(true); });
+            watch(tweak3, () => { invalidate(true); });
+            const adjustedImage = () => {
+                if (tweak1.value === 0 && tweak2.value === 0 && tweak3.value === 0) {
+                    return image.value;
+                }
+                return image.value.adjust(tweak1.value, tweak2.value, tweak3.value);
+            };
+            const invalidate = (resetPalette = false) => {
+                valid.value = false;
+                if (resetPalette)
+                    palette.value = undefined;
+            };
             const render = async () => {
+                if (image.value === undefined)
+                    return;
+                console.log("Rendering!");
                 setTimeout(async () => {
+                    if (palette.value === undefined)
+                        palette.value = Palette.fromImageMatches(adjustedImage());
+                    const adjustedImg = adjustedImage();
                     // draw the image on the canvas,
-                    PatternRenderer.fromId("result-canvas", image.value, palette.value, {
-                        width: 1200,
-                        height: 1200,
-                        showCenter: showCenter.value,
+                    PatternRenderer.fromId("result-canvas", adjustedImg, palette.value, {
+                        canvasWidth: 1200,
+                        canvasHeight: 1200,
+                        colorGetter: PatternRendererColorGetter.fromPalette(adjustedImg, palette.value),
+                        showCenter: showLines.value,
                         showLines: showLines.value,
                         symbolStyle: symbolStyle.value,
+                        saveInk: saveInk.value,
                     }).render();
-                    // then update the low-res previews
-                    // @ts-ignore
-                    const canvas = await html2canvas(document.getElementById("pattern"), { allowTaint: false });
-                    resultURL.value = canvas.toDataURL();
+                    // uses the original image no matter what.
+                    PatternRenderer.fromId("original-image-canvas", image.value, palette.value, {
+                        canvasWidth: 600,
+                        canvasHeight: 600,
+                        colorGetter: PatternRendererColorGetter.fromImage(image.value),
+                        showCenter: false,
+                        showLines: false,
+                        symbolStyle: "none",
+                        saveInk: false,
+                    }).render();
+                    PreviewPopulator.applyCanvas("original-image");
+                    PatternRenderer.fromId("color-preview-canvas", adjustedImg, palette.value, {
+                        canvasWidth: 600,
+                        canvasHeight: 600,
+                        colorGetter: PatternRendererColorGetter.fromPalette(adjustedImg, palette.value),
+                        showCenter: false,
+                        showLines: false,
+                        symbolStyle: "none",
+                        saveInk: false,
+                    }).render();
+                    PreviewPopulator.applyCanvas("color-preview");
+                    resultURL.value = await UrlHandler.elementToUrl("pattern");
                     valid.value = true;
                 }, 100);
             };
             onUpdated(() => {
-                if (image.value === undefined || palette.value === undefined)
-                    return;
                 if (!valid.value)
                     render();
             });
             return {
                 imgUrl,
                 showLines,
-                showCenter,
                 symbolStyle,
                 pageOrientation,
+                saveInk,
+                tweak1,
+                tweak2,
+                tweak3,
+                resetTweaks: () => {
+                    tweak1.value = tweak2.value = tweak3.value = 0;
+                },
                 failed,
                 error,
                 valid,
                 resultURL,
-                // functions for processing state variables at render
-                getColors: () => {
+                colors: computed(() => {
                     if (palette.value === undefined)
                         return [];
                     return palette.value.colors;
-                },
-                getDescription: () => {
+                }),
+                description: computed(() => {
                     const img = image.value;
                     if (img === undefined)
                         return "loading...";
@@ -89,7 +134,8 @@ export function mountApp() {
                     const height = img.height;
                     const totalStitches = img.countStitches();
                     return `${width} x ${height}, ${totalStitches} stitches`;
-                },
+                }),
+                threads: ThreadColor.allByDistanceFrom(new PixelColor(200, 248, 64, 255)).map((threadColor) => threadColor.raw),
             };
         },
     });
@@ -97,20 +143,15 @@ export function mountApp() {
      * Describes an entry in the final pattern's color key.
      */
     app.component('color-key', {
-        props: ['color', 'symbolStyle'],
+        props: ['color', 'symbolStyle', 'saveInk'],
         template: "#color-key-template",
         setup(props) {
-            const { color, symbolStyle } = props;
-            console.log(`ColorKey symbolstyle = ${symbolStyle}`);
-            const rawColors = color.rawColors;
-            const threadColor = color.threadColor;
-            const overlay = color.getSymbol(symbolStyle);
-            const description = `DMC ${threadColor.dmcNumber}`;
             return {
-                threadColor: threadColor.raw,
-                rawColors,
-                overlay,
-                description,
+                threadColor: computed(() => props.color.threadColor.raw),
+                rawColors: computed(() => props.color.rawColors),
+                overlay: computed(() => props.color.getSymbol(props.symbolStyle)),
+                description: computed(() => `DMC ${props.color.threadColor.dmcNumber}`),
+                longDescription: computed(() => props.color.threadColor.name),
             };
         },
     });
@@ -118,22 +159,19 @@ export function mountApp() {
      * Describes an entry in the color palette, shown when configuring.
      */
     app.component('palette-color', {
-        props: ['color', 'symbolStyle'],
+        props: ['color', 'symbolStyle', 'saveInk'],
         template: "#palette-color-template",
         setup(props) {
-            const { color, symbolStyle } = props;
-            console.log(`PaletteColor symbolstyle = ${symbolStyle}`);
-            const threadColor = color.threadColor;
-            const rawColors = color.rawColors;
-            const overlay = color.getSymbol(symbolStyle);
-            const description = `DMC ${threadColor.dmcNumber}`;
-            const longDescription = threadColor.name;
+            const expanded = ref(false);
+            const toggleExpanded = () => expanded.value = !expanded.value;
             return {
-                threadColor: threadColor.raw,
-                rawColors,
-                overlay,
-                description,
-                longDescription,
+                expanded,
+                toggleExpanded,
+                threadColor: computed(() => props.color.threadColor.raw),
+                rawColors: computed(() => props.color.rawColors),
+                overlay: computed(() => props.color.getSymbol(props.symbolStyle)),
+                description: computed(() => `DMC ${props.color.threadColor.dmcNumber}`),
+                longDescription: computed(() => props.color.threadColor.name),
             };
         },
     });
@@ -141,16 +179,14 @@ export function mountApp() {
      * Describes a little square filled with a raw color, maybe with a nice overlay.
      */
     app.component('color-tile', {
-        props: ['color', 'overlay'],
+        props: ['color', 'overlay', 'saveInk'],
         template: "#color-tile-template",
         setup(props) {
-            const color = props.color;
-            const overlayColor = props.color.getOverlayColor();
-            const overlay = props.overlay;
             return {
-                color,
-                overlayColor,
-                overlay,
+                overlayColor: computed(() => {
+                    var _a, _b;
+                    return (_b = (_a = props.color) === null || _a === void 0 ? void 0 : _a.getOverlayColor()) !== null && _b !== void 0 ? _b : "#f0f";
+                }),
             };
         },
     });
