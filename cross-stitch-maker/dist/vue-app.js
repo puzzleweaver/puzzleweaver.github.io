@@ -27,9 +27,11 @@ export function mountApp() {
             // user-selected settings
             const palette = ref(undefined);
             const showLines = ref(true);
-            const symbolStyle = ref("numbers");
+            const symbolStyle = ref("symbols");
             const pageOrientation = ref("landscape");
-            const saveInk = ref(true);
+            const saveInk = ref(false);
+            const showImagePreview = ref(true);
+            const fontSize = ref("medium");
             const tweak1 = ref(0);
             const tweak2 = ref(0);
             const tweak3 = ref(0);
@@ -43,6 +45,8 @@ export function mountApp() {
             watch(showLines, () => invalidate());
             watch(symbolStyle, () => invalidate());
             watch(pageOrientation, () => invalidate());
+            watch(showImagePreview, () => invalidate());
+            watch(fontSize, () => invalidate());
             watch(saveInk, () => invalidate());
             watch(tweak1, () => { invalidate(true); });
             watch(tweak2, () => { invalidate(true); });
@@ -63,8 +67,9 @@ export function mountApp() {
                     return;
                 console.log("Rendering!");
                 setTimeout(async () => {
-                    if (palette.value === undefined)
+                    if (palette.value === undefined) {
                         palette.value = Palette.fromImageMatches(adjustedImage());
+                    }
                     const adjustedImg = adjustedImage();
                     // draw the image on the canvas,
                     PatternRenderer.fromId("result-canvas", adjustedImg, palette.value, {
@@ -86,7 +91,7 @@ export function mountApp() {
                         symbolStyle: "none",
                         saveInk: false,
                     }).render();
-                    PreviewPopulator.applyCanvas("original-image");
+                    PreviewPopulator.applyCanvas("original-image", "original-image-canvas");
                     PatternRenderer.fromId("color-preview-canvas", adjustedImg, palette.value, {
                         canvasWidth: 600,
                         canvasHeight: 600,
@@ -96,7 +101,8 @@ export function mountApp() {
                         symbolStyle: "none",
                         saveInk: false,
                     }).render();
-                    PreviewPopulator.applyCanvas("color-preview");
+                    PreviewPopulator.applyCanvas("color-preview", "color-preview-canvas");
+                    PreviewPopulator.applyCanvas("color-preview-2", "color-preview-canvas");
                     resultURL.value = await UrlHandler.elementToUrl("pattern");
                     valid.value = true;
                 }, 100);
@@ -111,14 +117,25 @@ export function mountApp() {
                 symbolStyle,
                 pageOrientation,
                 saveInk,
+                showImagePreview,
+                fontSize,
                 tweak1,
+                changeTweak1: (delta) => tweak1.value = tweak1.value + delta,
                 tweak2,
+                changeTweak2: (delta) => tweak2.value = tweak2.value + delta,
                 tweak3,
-                resetTweaks: () => {
-                    tweak1.value = tweak2.value = tweak3.value = 0;
-                },
+                changeTweak3: (delta) => tweak3.value = tweak3.value + delta,
+                resetTweaks: () => tweak1.value = tweak2.value = tweak3.value = 0,
                 failed,
                 error,
+                warning: computed(() => {
+                    if (palette.value === undefined)
+                        return undefined;
+                    if (palette.value.colors.length > 20) {
+                        return "Too many colors. For optimal results, use an image with a smaller palette.";
+                    }
+                    return undefined;
+                }),
                 valid,
                 resultURL,
                 colors: computed(() => {
@@ -126,14 +143,18 @@ export function mountApp() {
                         return [];
                     return palette.value.colors;
                 }),
-                description: computed(() => {
-                    const img = image.value;
-                    if (img === undefined)
-                        return "loading...";
-                    const width = img.width;
-                    const height = img.height;
-                    const totalStitches = img.countStitches();
-                    return `${width} x ${height}, ${totalStitches} stitches`;
+                stitchesWide: computed(() => { var _a, _b; return (_b = (_a = image.value) === null || _a === void 0 ? void 0 : _a.width) !== null && _b !== void 0 ? _b : 0; }),
+                stitchesTall: computed(() => { var _a, _b; return (_b = (_a = image.value) === null || _a === void 0 ? void 0 : _a.height) !== null && _b !== void 0 ? _b : 0; }),
+                totalStitches: computed(() => { var _a, _b; return (_b = (_a = image.value) === null || _a === void 0 ? void 0 : _a.countStitches()) !== null && _b !== void 0 ? _b : 0; }),
+                keyFontSize: computed(() => {
+                    var _a;
+                    const sizes = {
+                        xsmall: "1.5rem",
+                        small: "2rem",
+                        medium: "3rem",
+                        large: "4rem",
+                    };
+                    return (_a = sizes[fontSize.value]) !== null && _a !== void 0 ? _a : "2rem";
                 }),
                 threads: ThreadColor.allByDistanceFrom(new PixelColor(200, 248, 64, 255)).map((threadColor) => threadColor.raw),
             };

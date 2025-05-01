@@ -4,6 +4,31 @@
     --accent-bg: rgb(237, 218, 255);
 }
 
+.tweak {
+    width: 2rem;
+    height: 2rem;
+}
+
+span.tweak {
+    background-color: white;
+}
+
+.row {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.col {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
 .palette-color-container {
     display: inline-flex;
     background-color: white;
@@ -14,13 +39,12 @@
 }
 
 .color-tile {
-    width: 2rem;
-    height: 2rem;
+    width: 1.5em;
+    height: 1.5em;
     display: inline-flex;
     margin-right: 10px;
     justify-content: center;
     align-items: center;
-    font-size: 1.5rem;
 }
 
 .setting {
@@ -47,8 +71,6 @@ input[type="range"] {
 
 .pattern-key-portrait,
 .pattern-key-landscape {
-    justify-content: center;
-    align-items: center;
     text-align: center;
     font-size: 30px;
 }
@@ -88,8 +110,8 @@ input[type="range"] {
 }
 
 .main-preview {
-    height: 50vh;
-    width: auto;
+    width: 100%;
+    height: auto;
     border: 1px dashed black;
     border-radius: 10px;
 }

@@ -42,34 +42,69 @@
             </div>
         </div>
         <div v-else>
+            <div class="row" v-if="warning !== undefined">
+                <p class="warning">
+                    Warning: {{warning}}
+                </p>
+            </div>
+
             <details>
                 <summary>
                     Adjust Colors
                 </summary>
-                <div style="display: flex; flex-direction: row;">
-                    <span
-                        style="display: inline-flex; flex-direction: column; border-radius: 10px; margin: 10px; padding: 10px; background-color: white; text-align: center">
+
+                <div class="row">
+                    <span class="column"
+                        style="border-radius: 10px; margin: 10px; padding: 10px; background-color: white; text-align: center">
                         Original Image
+
                         <img id="original-image" style="width: 100%; height: auto" />
                     </span>
-                    <span
-                        style="display: inline-flex; flex-direction: column; border-radius: 10px; margin: 10px; padding: 10px; background-color: white; text-align: center">
+
+                    <span class="column"
+                        style="border-radius: 10px; margin: 10px; padding: 10px; background-color: white; text-align: center">
                         Threads Preview
+
                         <img id="color-preview" style="width: 100%; height: auto" />
+
                         <div v-if="!valid" style="position: relative; top: -50%; height: 0px">
                             <spinner style="left: 50%"></spinner>
                         </div>
                     </span>
                 </div>
 
-                If the palette doesn't line up quite right, adjusting the image slightly can usually
-                fix it.
-                <p class="setting">
-                    brightness:<input type="number" v-model="tweak1" min="-10" max="10" step=1>
-                    redness: <input type="number" v-model="tweak2" min="-10" max="10" step=1>
-                    blueness: <input type="number" v-model="tweak3" min="-10" max="10" step=1>
+                <p>
+                    If the palette doesn't line up quite right, adjusting the image slightly can usually
+                    fix it.
+                </p>
+
+                <p class="row tweak-container" style="margin: 0px">
+                    <span class="row">
+                        brightness:
+                        <button :onclick="() => changeTweak1(-1)" class="tweak">-</button>
+                        <span class="tweak row">{{tweak1}}</span>
+                        <button :onclick="() => changeTweak1(1)" class="tweak">+</button>
+                    </span>
+
+                    <span class="row">
+                        redness:
+                        <button :onclick="() => changeTweak2(-1)" class="tweak">-</button>
+                        <span class="tweak row">{{tweak2}}</span>
+                        <button :onclick="() => changeTweak2(1)" class="tweak">+</button>
+                    </span>
+
+                    <span class="row">
+                        blueness:
+                        <button :onclick="() => changeTweak3(-1)" class="tweak">-</button>
+                        <span class="tweak row">{{tweak3}}</span>
+                        <button :onclick="() => changeTweak3(1)" class="tweak">+</button>
+                    </span>
+                </p>
+
+                <p>
                     <button :onclick="resetTweaks" style="line-height: 1rem">reset</button>
                 </p>
+
                 <!-- <p>
                     <span v-for="color in colors">
                         <palette-color :color="color" :symbol-style="symbolStyle"></palette-color>
@@ -80,43 +115,64 @@
             <details>
                 <aside class="center" style="background-color: white; border: none">
                     Page Preview
+
                     <div style="border: 1px dashed black">
                         <img v-if="valid" :src="resultURL"></img>
+
                         <div v-else class="loading-pattern-preview">
                             <spinner></spinner>
                         </div>
                     </div>
                 </aside>
+
                 <summary>Page Settings</summary>
                 <p class="setting">
                     Page Orientation:
+
                     <select v-model="pageOrientation">
                         <option value="landscape">Landscape</option>
                         <option value="portrait">Portrait</option>
                     </select>
                 </p>
+
                 <p class="setting">
-                    Show lines:
-                    <input v-model="showLines" type="checkbox" />
+                    Font Size:
+                    <select v-model="fontSize">
+                        <option value="xsmall">Extra Small</option>
+                        <option value="small">Small</option>
+                        <option value="medium">Medium</option>
+                        <option value="large">Large</option>
+                    </select>
                 </p>
+
                 <p class="setting">
-                    Use Less Ink:
-                    <input v-model="saveInk" type="checkbox" />
-                </p>
-                <p class="setting">
-                    Symbol style:
+                    Symbol Style:
                     <select v-model="symbolStyle">
                         <option value="none">Off</option>
                         <option value="symbols">Symbols</option>
                         <option value="numbers">Numbers</option>
                     </select>
                 </p>
-                </section>
+
+                <p class="setting">
+                    Show Preview Thumbnail:
+                    <input v-model="showImagePreview" type="checkbox" />
+                </p>
+
+                <p class="setting">
+                    Show Lines:
+                    <input v-model="showLines" type="checkbox" />
+                </p>
+
+                <p class="setting">
+                    Use Less Ink:
+                    <input v-model="saveInk" type="checkbox" />
+                </p>
             </details>
 
             <h4 style="text-align: center">
-                Pattern:
-                &nbsp;
+                Pattern:&nbsp;
+
                 <a download="pattern.png" :href="resultURL">
                     <span>
                         <button :disabled="!valid">png <u>&#8595;</u></button>
@@ -126,6 +182,7 @@
 
             <div style="text-align: center">
                 <img v-if="valid" :src="resultURL" class="main-preview"></img>
+
                 <div v-else class="main-preview">
                     <spinner></spinner>
                 </div>
@@ -138,11 +195,28 @@
                 <span style="display: inline-block">
                     <canvas id="result-canvas"></canvas>
                 </span>
-                <div id="pattern-key" :class="`pattern-key-${pageOrientation}`">
-                    <div>{{description}}</div>
-                    <span v-for="color in colors">
-                        <color-key :color="color" :symbol-style="symbolStyle" :save-ink="saveInk"></color-key>
-                    </span>
+
+                <div id="pattern-key" :class="`column pattern-key-${pageOrientation}`"
+                    :style="`font-size: ${keyFontSize}`">
+                    <div class="row">
+                        <div class="column">
+                            <div>{{stitchesWide}}x{{stitchesTall}}</div>
+                            <div>{{totalStitches}} st.</div>
+                        </div>
+
+                        <img id="color-preview-2" :style="`
+                                width: ${pageOrientation === 'landscape' ? '33%' : '10%'};
+                                height: ${pageOrientation === 'landscape' ? 'auto' : 'auto'};
+                                float: right;
+                                ${showImagePreview ? '' : 'display: none;'}
+                            `" />
+                    </div>
+                    <hr>
+                    <div>
+                        <span v-for="color in colors">
+                            <color-key :color="color" :symbol-style="symbolStyle" :save-ink="saveInk"></color-key>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -160,33 +234,29 @@
     </footer>
 
     <template id="palette-color-template">
-        <span style="display: inline-flex; flex-direction: column; margin: 5px; max-width: 45%; border: none; background-color: white;
-            border-radius: 10px; padding: 5px; align-items: center; justify-content: center">
-            <div :onclick="toggleExpanded" style="user-select: none; display: inline-flex; align-items: center">
-                <color-tile :color="threadColor" overlay="" :save-ink="false"></color-tile>
-                {{description}}
-                &nbsp;
-                {{expanded ? '&#x23F6;' : '&#x23F7'}}
-            </div>
-            <div v-if="expanded">
-                <div style="border-top: 1px solid black; margin-top: 10px; padding-bottom: 10px">
-                    {{longDescription}}
-                </div>
-                <div style="display: inline-flex; flex-direction: row; overflow: scroll">
-                    <span style="padding-right: 10px">used&nbsp;for:</span>
-                    <span v-for="color in rawColors">
-                        <color-tile :color="color" :save-ink="false"></color-tile>
-                    </span>
-                </div>
-            </div>
+        <span class="column" style="margin: 5px; max-width: 45%; border: none; background-color: white;
+            border-radius: 10px; padding: 5px">
+            <span class="column" :onclick="toggleExpanded" style="user-select: none">
+                <color-key :color="color" symbol-style="none" :save-ink="false"></color-key>
+            </span>
+            <!-- <br v-if="expanded">
+            <span v-if="expanded" class="row" style="overflow: scroll">
+                <span>used&nbsp;for:</span>
+                <span v-for="color in rawColors">
+                    <color-tile :color="color" :save-ink="false"></color-tile>
+                </span>
+            </span> -->
         </span>
     </template>
 
     <template id="color-key-template">
         <span class="color-key-container" style="flex-direction: column">
-            <div>
+            <div class="row">
                 <color-tile :color="threadColor" :overlay="overlay" :save-ink="saveInk"></color-tile>
-                {{description}}
+                <span class="column">
+                    <div style="font-size: 0.8em; line-height: 1em">{{description}}</div>
+                    <div style="font-size: 0.5em; line-height: 1em">{{longDescription}}</div>
+                </span>
             </div>
             <!-- <small>{{longDescription}}</small> -->
         </span>
@@ -194,8 +264,16 @@
 
     <template id="color-tile-template">
         <span class="color-tile" :style="`
-            background-color: ${color.toString()};
-            color: ${overlayColor};
+            ${
+                saveInk ?
+                `border: 1px solid ${color.toString()}` :
+                `background-color: ${color.toString()}`
+            };
+            color: ${
+                saveInk ?
+                'black' :
+                overlayColor
+            };
             z-index: 2;
         `">
             {{overlay}}

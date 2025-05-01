@@ -177,9 +177,9 @@ export class PreviewPopulator {
             preview.src = src;
         }
     }
-    static applyCanvas(prefix) {
-        const element = document.getElementById(prefix);
-        const canvas = document.getElementById(`${prefix}-canvas`);
+    static applyCanvas(elementId, canvasId) {
+        const element = document.getElementById(elementId);
+        const canvas = document.getElementById(canvasId);
         element.src = canvas.toDataURL();
     }
 }

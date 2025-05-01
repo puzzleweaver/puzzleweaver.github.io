@@ -186,13 +186,36 @@ export class PaletteColor {
             return `${this.index + 1}`;
         if (symbolStyle === "symbols") {
             const symbols = [
-                "!", "?", "c", "f", "h", "i", "j", "k", "l",
-                "m", "n", "r", "s", "t", "u", "v", "w", "x", "y",
-                "z",
-                "\u23F9", "\u23FA", "\u25D6", "\u25D7", "\u23F4",
-                "\u23F5", "\u23F6", "\u23F7", "\u25C6", "\u25E2",
-                "\u25E3", "\u25E4", "\u25E5", "\u2B1F", "\u2B2C",
-                "\u2B2E",
+                "\u25EF", // circle outline
+                "\u2605", // star
+                "\u2661", // heart outline
+                "\u25B2", // BIG up-pointing triangle
+                "+", // plus
+                "-", // minus
+                "~", // tilde
+                "/", // slash
+                "\\", // backslash
+                "\u2665", // heart
+                // "\u2736", // 6-pointed star
+                "\u2738", // 8-pointed star
+                "\u23F9", // square
+                "\u25CF", // circle
+                // "\u2B24", // big circle
+                "\u25D6", // left half-circle
+                // "\u25D7", // right half-circle
+                // "\u23F4", // left-pointing triangle
+                // "\u23F5", // right-pointing triangle
+                // "\u23F6", // up-pointing triangle
+                // "\u23F7", // down-pointing triangle
+                "\u25C6", // diamond
+                "\u25B3", // triangle outline
+                "\u25E2", // bottom-right right triangle
+                // "\u25E3", // bottom-left right triangle
+                // "\u25E4", // top-left right triangle
+                // "\u25E5", // top-right right triangle
+                "\u2B1F", // pentagon
+                // "\u2B2C", // horizontal oval
+                // "\u2B2E", // vertical oval
             ];
             return symbols[this.index % symbols.length];
         }

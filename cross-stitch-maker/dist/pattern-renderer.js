@@ -112,10 +112,15 @@ export class PatternRenderer {
         if (horizontal)
             this.ctx.lineWidth = PatternRenderer.getLineWidthFor(fromY - this.centerY);
         // figure out color
-        const color1 = this.getColorAt(fromX, fromY);
-        const color2 = this.getColorAt(fromX - offsetY, fromY - offsetX);
-        const isLineWhite = !color1.isBright() && !color2.isBright();
-        this.ctx.strokeStyle = isLineWhite ? lineWhite : lineBlack;
+        if (!this.options.saveInk) {
+            const color1 = this.getColorAt(fromX, fromY);
+            const color2 = this.getColorAt(fromX - offsetY, fromY - offsetX);
+            const isLineWhite = !color1.isBright() && !color2.isBright();
+            this.ctx.strokeStyle = isLineWhite ? lineWhite : lineBlack;
+        }
+        else {
+            this.ctx.strokeStyle = "black";
+        }
         this.strokeLine(fromX, fromY, fromX + offsetX, fromY + offsetY);
     }
     drawCenterBox(dx, dy) {
@@ -130,13 +135,13 @@ export class PatternRenderer {
             this.ctx.strokeStyle = color.toString();
             this.ctx.lineWidth = 1;
             const hatches = 2;
-            for (var i = 0; i < hatches; i++) {
-                const frac = i / hatches;
-                this.strokeLine(x + frac, y, x + 1, y + 1 - frac);
-                this.strokeLine(x, y + frac, x + 1 - frac, y + 1);
-            }
-            this.strokeLine(x, y, x + 1, y + 1);
-            this.ctx.strokeRect(this.getX(x), this.getY(y), this.pixelDim - 1, this.pixelDim - 1);
+            // for (var i = 0; i < hatches; i++) {
+            //     const frac = i / hatches;
+            //     this.strokeLine(x + frac, y, x + 1, y + 1 - frac);
+            //     this.strokeLine(x, y + frac, x + 1 - frac, y + 1);
+            // }
+            // this.strokeLine(x, y, x + 1, y + 1);
+            this.ctx.strokeRect(this.getX(x) + 2, this.getY(y) + 2, this.pixelDim - 4, this.pixelDim - 4);
         }
         else {
             this.ctx.fillStyle = color.toString();
