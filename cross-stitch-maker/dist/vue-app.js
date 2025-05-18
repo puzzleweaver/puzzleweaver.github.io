@@ -32,14 +32,22 @@ export function mountApp() {
             const saveInk = ref(false);
             const showImagePreview = ref(true);
             const fontSize = ref("medium");
-            const tweak1 = ref(0);
-            const tweak2 = ref(0);
-            const tweak3 = ref(0);
+            const title = ref("");
             // calculated/derived:
             const valid = ref(true);
             const error = ref(undefined);
             const failed = ref(false);
             const resultURL = ref(undefined);
+            // color selection state
+            const selectedColor = ref(undefined);
+            const setSelectedColor = (newColor) => {
+                if (`${selectedColor.value}` === `${newColor}`) {
+                    selectedColor.value = undefined;
+                }
+                else {
+                    selectedColor.value = newColor;
+                }
+            };
             // re-render if parameters change.
             watch(palette, () => invalidate());
             watch(showLines, () => invalidate());
@@ -48,15 +56,16 @@ export function mountApp() {
             watch(showImagePreview, () => invalidate());
             watch(fontSize, () => invalidate());
             watch(saveInk, () => invalidate());
-            watch(tweak1, () => { invalidate(true); });
-            watch(tweak2, () => { invalidate(true); });
-            watch(tweak3, () => { invalidate(true); });
-            const adjustedImage = () => {
-                if (tweak1.value === 0 && tweak2.value === 0 && tweak3.value === 0) {
-                    return image.value;
+            var titleUpdateTimeout = undefined;
+            watch(title, () => {
+                if (titleUpdateTimeout !== undefined) {
+                    clearTimeout(titleUpdateTimeout);
                 }
-                return image.value.adjust(tweak1.value, tweak2.value, tweak3.value);
-            };
+                titleUpdateTimeout = setTimeout(() => {
+                    titleUpdateTimeout = undefined;
+                    invalidate();
+                }, 500);
+            });
             const invalidate = (resetPalette = false) => {
                 valid.value = false;
                 if (resetPalette)
@@ -68,14 +77,13 @@ export function mountApp() {
                 console.log("Rendering!");
                 setTimeout(async () => {
                     if (palette.value === undefined) {
-                        palette.value = Palette.fromImageMatches(adjustedImage());
+                        palette.value = Palette.fromImageMatches(image.value);
                     }
-                    const adjustedImg = adjustedImage();
                     // draw the image on the canvas,
-                    PatternRenderer.fromId("result-canvas", adjustedImg, palette.value, {
+                    PatternRenderer.fromId("result-canvas", image.value, palette.value, {
                         canvasWidth: 1200,
                         canvasHeight: 1200,
-                        colorGetter: PatternRendererColorGetter.fromPalette(adjustedImg, palette.value),
+                        colorGetter: PatternRendererColorGetter.fromPalette(image.value, palette.value),
                         showCenter: showLines.value,
                         showLines: showLines.value,
                         symbolStyle: symbolStyle.value,
@@ -92,10 +100,10 @@ export function mountApp() {
                         saveInk: false,
                     }).render();
                     PreviewPopulator.applyCanvas("original-image", "original-image-canvas");
-                    PatternRenderer.fromId("color-preview-canvas", adjustedImg, palette.value, {
+                    PatternRenderer.fromId("color-preview-canvas", image.value, palette.value, {
                         canvasWidth: 600,
                         canvasHeight: 600,
-                        colorGetter: PatternRendererColorGetter.fromPalette(adjustedImg, palette.value),
+                        colorGetter: PatternRendererColorGetter.fromPalette(image.value, palette.value),
                         showCenter: false,
                         showLines: false,
                         symbolStyle: "none",
@@ -119,13 +127,9 @@ export function mountApp() {
                 saveInk,
                 showImagePreview,
                 fontSize,
-                tweak1,
-                changeTweak1: (delta) => tweak1.value = tweak1.value + delta,
-                tweak2,
-                changeTweak2: (delta) => tweak2.value = tweak2.value + delta,
-                tweak3,
-                changeTweak3: (delta) => tweak3.value = tweak3.value + delta,
-                resetTweaks: () => tweak1.value = tweak2.value = tweak3.value = 0,
+                title,
+                selectedColor,
+                setSelectedColor,
                 failed,
                 error,
                 warning: computed(() => {
@@ -180,19 +184,39 @@ export function mountApp() {
      * Describes an entry in the color palette, shown when configuring.
      */
     app.component('palette-color', {
-        props: ['color', 'symbolStyle', 'saveInk'],
+        props: ['color', 'symbolStyle', 'saveInk', 'onclick', 'selected'],
         template: "#palette-color-template",
         setup(props) {
-            const expanded = ref(false);
-            const toggleExpanded = () => expanded.value = !expanded.value;
             return {
-                expanded,
-                toggleExpanded,
                 threadColor: computed(() => props.color.threadColor.raw),
                 rawColors: computed(() => props.color.rawColors),
                 overlay: computed(() => props.color.getSymbol(props.symbolStyle)),
                 description: computed(() => `DMC ${props.color.threadColor.dmcNumber}`),
                 longDescription: computed(() => props.color.threadColor.name),
+                toggle: computed(() => () => props.onclick(props.color)),
+            };
+        },
+    });
+    /**
+     * Shows details of the selected color.
+     */
+    app.component('selected-color-options', {
+        props: ['color', 'symbolStyle'],
+        template: "#selected-color-options-template",
+        setup(props) {
+            return {
+                threadColor: computed(() => props.color.threadColor.raw),
+                rawColors: computed(() => props.color.rawColors),
+                overlay: computed(() => props.color.getSymbol(props.symbolStyle)),
+                description: computed(() => `DMC ${props.color.threadColor.dmcNumber}`),
+                longDescription: computed(() => props.color.threadColor.name),
+                suggestions: computed(() => {
+                    const threadColors = ThreadColor.allByDistanceFrom(props.color.threadColor.raw)
+                        .slice(0, 20);
+                    return threadColors.map((threadColor) => {
+                        return props.color.withThreadColor(threadColor);
+                    });
+                }),
             };
         },
     });

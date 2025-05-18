@@ -13,20 +13,33 @@
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
 
     <title>Pattern Maker</title>
-    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/favicon.png">
     <base href="/cross-stitch-maker/">
 </head>
 
 <body>
-    <header>
-        <h1>Pixel Pattern Maker</h1>
-        <sub>by Emma with Love!</sub>
+    <header class="stitched">
+        <h1>
+            <img src="/favicon.png" class="stitch" />
+            <img src="/favicon.png" class="stitch" />
+            Pixel Pattern Maker
+            <img src="/favicon.png" class="stitch" />
+            <img src="/favicon.png" class="stitch" />
+        </h1>
+        <a href="https://puzzleweaver.github.io/">
+            <button class="onstitched">by Emma!</button>
+        </a>
     </header>
 
     <main id="vue-app">
-        <p style="width: 100%; text-align: center">
+        <p style="width: 100%; text-align: center; background-color: var(--accent-bg); border: 1px solid var(--accent); border-radius: 5px"
+            class="stitched">
+            <span style="margin: 10px; display: block">You're using the image:</span>
+            <br>
+            <img style=" image-rendering: pixelated; height: 20vh" :src="imgUrl" />
+            <br>
             <a id="link-back" :href="`./select-image?img=${imgUrl}`">
-                <button>&#x2190; Select Different Image</button>
+                <button>&#x2190; Choose a different image</button>
             </a>
         </p>
 
@@ -48,72 +61,8 @@
                 </p>
             </div>
 
-            <details>
-                <summary>
-                    Adjust Colors
-                </summary>
-
-                <div class="row">
-                    <span class="column"
-                        style="border-radius: 10px; margin: 10px; padding: 10px; background-color: white; text-align: center">
-                        Original Image
-
-                        <img id="original-image" style="width: 100%; height: auto" />
-                    </span>
-
-                    <span class="column"
-                        style="border-radius: 10px; margin: 10px; padding: 10px; background-color: white; text-align: center">
-                        Threads Preview
-
-                        <img id="color-preview" style="width: 100%; height: auto" />
-
-                        <div v-if="!valid" style="position: relative; top: -50%; height: 0px">
-                            <spinner style="left: 50%"></spinner>
-                        </div>
-                    </span>
-                </div>
-
-                <p>
-                    If the palette doesn't line up quite right, adjusting the image slightly can usually
-                    fix it.
-                </p>
-
-                <p class="row tweak-container" style="margin: 0px">
-                    <span class="row">
-                        brightness:
-                        <button :onclick="() => changeTweak1(-1)" class="tweak">-</button>
-                        <span class="tweak row">{{tweak1}}</span>
-                        <button :onclick="() => changeTweak1(1)" class="tweak">+</button>
-                    </span>
-
-                    <span class="row">
-                        redness:
-                        <button :onclick="() => changeTweak2(-1)" class="tweak">-</button>
-                        <span class="tweak row">{{tweak2}}</span>
-                        <button :onclick="() => changeTweak2(1)" class="tweak">+</button>
-                    </span>
-
-                    <span class="row">
-                        blueness:
-                        <button :onclick="() => changeTweak3(-1)" class="tweak">-</button>
-                        <span class="tweak row">{{tweak3}}</span>
-                        <button :onclick="() => changeTweak3(1)" class="tweak">+</button>
-                    </span>
-                </p>
-
-                <p>
-                    <button :onclick="resetTweaks" style="line-height: 1rem">reset</button>
-                </p>
-
-                <!-- <p>
-                    <span v-for="color in colors">
-                        <palette-color :color="color" :symbol-style="symbolStyle"></palette-color>
-                    </span>
-                </p> -->
-            </details>
-
-            <details>
-                <aside class="center" style="background-color: white; border: none">
+            <details class="stitched" open>
+                <aside class="center onstitched">
                     Page Preview
 
                     <div style="border: 1px dashed black">
@@ -155,8 +104,12 @@
                 </p>
 
                 <p class="setting">
-                    Show Preview Thumbnail:
+                    Include Preview:
                     <input v-model="showImagePreview" type="checkbox" />
+                </p>
+
+                <p class="setting">
+                    Title: <input v-model="title" type="text" />
                 </p>
 
                 <p class="setting">
@@ -170,23 +123,62 @@
                 </p>
             </details>
 
-            <h4 style="text-align: center">
-                Pattern:&nbsp;
+            <!-- <details class="stitched" style="visibility: hidden">
+                <summary>
+                    Color Palette
+                </summary>
 
-                <a download="pattern.png" :href="resultURL">
-                    <span>
-                        <button :disabled="!valid">png <u>&#8595;</u></button>
+                <div class="row">
+                    <span class="column"
+                        style="border-radius: 10px; margin: 10px; padding: 10px; background-color: white; text-align: center">
+                        Original Image
+
+                        <img id="original-image" style="width: 100%; height: auto" />
                     </span>
-                </a>
-            </h4>
 
-            <div style="text-align: center">
-                <img v-if="valid" :src="resultURL" class="main-preview"></img>
+                    <span class="column"
+                        style="border-radius: 10px; margin: 10px; padding: 10px; background-color: white; text-align: center">
+                        Threads Preview
 
-                <div v-else class="main-preview">
-                    <spinner></spinner>
+                        <img id="color-preview" style="width: 100%; height: auto" />
+
+                        <div v-if="!valid" style="position: relative; top: -50%; height: 0px">
+                            <spinner style="left: 50%"></spinner>
+                        </div>
+                    </span>
                 </div>
-            </div>
+
+                <p>
+                    Current Color Palette:
+                    <br>
+                    <span v-for="color in colors">
+                        <palette-color :color="color" :symbol-style="symbolStyle" :selected="selectedColor === color"
+                            :onclick="setSelectedColor"></palette-color>
+                    </span>
+                </p>
+                <p>
+                    <selected-color-options :color="selectedColor"></selected-color-options>
+                </p>
+            </details> -->
+
+            <p style="padding-top: 10px; width: 100%; text-align: center; background-color: var(--accent-bg); border: 1px solid var(--accent); border-radius: 5px"
+                class="stitched">
+                <span style="margin: 10px; display: block">
+                    Pattern:&nbsp;
+                    <a download="pattern.png" :href="resultURL">
+                        <span>
+                            <button :disabled="!valid">png <u>&#8595;</u></button>
+                        </span>
+                    </a>
+                </span>
+                <br>
+                <span v-if="valid" style="position: relative">
+                    <img :src="resultURL" class="main-preview"></img>
+                </span>
+                <span v-else class="main-preview">
+                    <spinner></spinner>
+                </span>
+            </p>
         </div>
 
         <!-- HIDDEN actual pattern-->
@@ -198,6 +190,7 @@
 
                 <div id="pattern-key" :class="`column pattern-key-${pageOrientation}`"
                     :style="`font-size: ${keyFontSize}`">
+                    <div v-if="title.length !== 0">{{title}}</div>
                     <div class="row">
                         <div class="column">
                             <div>{{stitchesWide}}x{{stitchesTall}}</div>
@@ -234,19 +227,57 @@
     </footer>
 
     <template id="palette-color-template">
-        <span class="column" style="margin: 5px; max-width: 45%; border: none; background-color: white;
-            border-radius: 10px; padding: 5px">
-            <span class="column" :onclick="toggleExpanded" style="user-select: none">
+        <span class="col" :style="`
+            margin: 5px;
+            max-width: 45%;
+            background-color: white;
+            border-radius: 10px;
+            user-select: none;
+            ${selected ? 'border: 3px solid var(--purple); margin: calc(5px-1.5px)' : ''}`" @click="toggle">
+            <span class="col">
                 <color-key :color="color" symbol-style="none" :save-ink="false"></color-key>
             </span>
-            <!-- <br v-if="expanded">
-            <span v-if="expanded" class="row" style="overflow: scroll">
-                <span>used&nbsp;for:</span>
-                <span v-for="color in rawColors">
-                    <color-tile :color="color" :save-ink="false"></color-tile>
-                </span>
-            </span> -->
         </span>
+    </template>
+
+    <template id="selected-color-options-template">
+        <p v-if="color !== undefined" class="onstitched box" style="text-align: center">
+            <palette-color :color="color" :onclick="() => {}" :selected="false"></palette-color>
+            <br>
+
+            <span>
+                Used for these image colors:
+                <span v-for="rawColor in rawColors">
+                    <span
+                        style="border-radius: 10px; padding: 5px; margin: 5px; background-color: white; display: inline-flex; max-width: 100%">
+                        <color-tile :color="rawColor" :save-ink="false"></color-tile>
+                    </span>
+                </span>
+            </span>
+            <!-- <hr> -->
+            <br>
+            <span
+                style="height: 3px; border-radius: 1.5px; margin: 10px; background-color: var(--purple); text-align: center; display: block"></span>
+
+            <span>Use a different thread color?</span>
+            <span v-for="suggestion in suggestions">
+                <palette-color :color="suggestion" :selected="`${suggestion}` === `${color}`"
+                    :onclick="(color) => {console.log(`wump: ${color}`)}"></palette-color>
+                <!-- <span>
+                    <color-tile :color="threadColor.raw" :save-ink="false"></color-tile>
+                    {{threadColor.name}}
+            </span> -->
+            </span>
+        </p>
+        <p v-else class="onstitched box" style="text-align: center">
+            Select a color above to see more options.
+        </p>
+        <!-- <span class="col" style="margin: 5px; max-width: 45%; background-color: white;
+        border-radius: 10px; user-select: none">
+            <span class="col">
+                <color-key :color="color" symbol-style="none" :save-ink="false"></color-key>
+            </span>
+        </span> -->
     </template>
 
     <template id="color-key-template">

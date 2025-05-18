@@ -11,13 +11,12 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
     <title>Pkmn Png</title>
-    <link rel="icon" type="image/x-icon" href="./favicon.ico">
     <base href="/pkmn-png/">
 </head>
 
 <body>
     <header>
-        <h1>PKMN PNG</h1>
+        <h1>Pokemon Sprite Finder</h1>
     </header>
     <main id="app">
         <h4 class="center">
@@ -25,7 +24,7 @@
             <input id="name-input" v-model=name v-on:keyup.enter="loadImages" size="10"
                 style="text-align: center; line-height: 1.5rem" />
             <button :onclick=loadImages :disabled=loading class="bar-button">go!</button>
-            <button :onclick=randomize class="bar-button">&#x2684;</button>
+            <button :onclick=randomize :disabled=loading class="bar-button">&#x2684;</button>
         </h4>
         <!-- <p class="center">
             Only show: <select v-model=generation>
@@ -53,6 +52,8 @@
             <span v-for="entry in Object.entries(images)">
                 <image-card :heading=entry[0] :data=entry[1]></image-card>
             </span>
+            <span style="text-align: center">There may be few or no sprites for the newest-generation pokemon,
+                sorry.</span>
         </p>
     </main>
 

@@ -1,12 +1,82 @@
 :root {
     --accent: rgb(104, 0, 190);
-    --accent-hover: rgb(134, 0, 230);
+    --accent-light: rgb(134, 0, 230);
     --accent-bg: rgb(237, 218, 255);
+    --accent-bg-light: rgb(243, 230, 255);
+    --purple: rgb(197, 126, 255);
+    --purple-light: rgb(209, 153, 255);
 }
 
 .tweak {
     width: 2rem;
     height: 2rem;
+}
+
+.onstitched {
+    border-width: 3px;
+    border-color: var(--purple);
+    background-color: var(--accent-bg);
+}
+
+button:enabled {
+    border-color: var(--purple);
+    background-color: var(--accent-bg);
+    border-width: 3px;
+    color: black;
+}
+
+button:hover:enabled {
+    border-color: var(--purple-light);
+    background-color: var(--accent-bg-light);
+}
+
+.stitched {
+    background-image: url("stitch-bg.png");
+    background-repeat: repeat;
+}
+
+.stitch,
+.littlestitch {
+    border-radius: 0px;
+    height: 3rem;
+    image-rendering: pixelated;
+    margin: 0px;
+    padding: 0px;
+}
+
+.littlestitch {
+    height: 1rem;
+}
+
+#pokemon-button {
+    background-color: rgb(255, 100, 100);
+    border-color: rgb(200, 0, 0);
+    border-width: 3px;
+}
+
+#pokemon-button:hover {
+    background-color: rgb(255, 150, 150);
+    border-color: rgb(255, 0, 0);
+    border-width: 3px;
+}
+
+#stardew-button {
+    background-color: rgb(255, 212, 135);
+    border-color: rgb(226, 123, 63);
+    border-width: 3px;
+    color: black;
+}
+
+#stardew-button:hover {
+    background-color: rgb(255, 229, 180);
+    border-color: rgb(233, 149, 101);
+    border-width: 3px;
+}
+
+.box {
+    border: 3px solid var(--purple);
+    padding: 5px;
+    border-radius: 10px;
 }
 
 span.tweak {
@@ -42,7 +112,6 @@ span.tweak {
     width: 1.5em;
     height: 1.5em;
     display: inline-flex;
-    margin-right: 10px;
     justify-content: center;
     align-items: center;
 }
@@ -65,7 +134,6 @@ input[type="range"] {
     display: inline-flex;
     align-items: center;
     vertical-align: center;
-    margin-right: 10px;
     padding: 5px;
 }
 
@@ -110,7 +178,7 @@ input[type="range"] {
 }
 
 .main-preview {
-    width: 100%;
+    width: 90%;
     height: auto;
     border: 1px dashed black;
     border-radius: 10px;

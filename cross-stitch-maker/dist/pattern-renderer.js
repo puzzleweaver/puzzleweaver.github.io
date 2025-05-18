@@ -129,19 +129,31 @@ export class PatternRenderer {
         const size = 0.2;
         this.ctx.strokeRect(this.getX(this.centerX + dx * size), this.getY(this.centerY + dy * size), this.pixelDim * size, this.pixelDim * size);
     }
+    hatching() {
+        return this.options.saveInk && this.options.symbolStyle === "none";
+    }
+    strokeRect(x, y, w, h) {
+        if (this.hatching()) {
+            const hatches = 3;
+            const frac = 1 / hatches;
+            for (var i = frac; i < 1; i += frac) {
+                this.strokeLine(x + i, y, x + w, y + h - i);
+                this.strokeLine(x, y + i, x + w - i, y + h);
+            }
+            this.strokeLine(x, y, x + w, y + h);
+        }
+        this.strokeLine(x, y, x + w, y);
+        this.strokeLine(x, y, x, y + h);
+        this.strokeLine(x + w, y, x + w, y + h);
+        this.strokeLine(x, y + h, x + w, y + h);
+    }
     renderPixel(x, y) {
         const color = this.getColorAt(x, y);
         if (this.options.saveInk) {
             this.ctx.strokeStyle = color.toString();
             this.ctx.lineWidth = 1;
-            const hatches = 2;
-            // for (var i = 0; i < hatches; i++) {
-            //     const frac = i / hatches;
-            //     this.strokeLine(x + frac, y, x + 1, y + 1 - frac);
-            //     this.strokeLine(x, y + frac, x + 1 - frac, y + 1);
-            // }
-            // this.strokeLine(x, y, x + 1, y + 1);
-            this.ctx.strokeRect(this.getX(x) + 2, this.getY(y) + 2, this.pixelDim - 4, this.pixelDim - 4);
+            const gap = 0.1;
+            this.strokeRect(x + gap, y + gap, 1 - gap * 2, 1 - gap * 2);
         }
         else {
             this.ctx.fillStyle = color.toString();

@@ -178,9 +178,14 @@ export class PreviewPopulator {
         }
     }
     static applyCanvas(elementId, canvasId) {
-        const element = document.getElementById(elementId);
-        const canvas = document.getElementById(canvasId);
-        element.src = canvas.toDataURL();
+        try {
+            const element = document.getElementById(elementId);
+            const canvas = document.getElementById(canvasId);
+            element.src = canvas.toDataURL();
+        }
+        catch (e) {
+            console.log(e);
+        }
     }
 }
 /**

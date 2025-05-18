@@ -14,8 +14,19 @@ export class PixelColor {
         return new PixelColor(255, 255, 255, 255);
     }
     static fromImageData(data) {
-        const [red, green, blue, alpha] = data;
-        return new PixelColor(red, green, blue, alpha);
+        var [red, green, blue, alpha] = data;
+        return new PixelColor(red, green, blue, alpha)
+            .blend(PixelColor.white()); // For Now.
+    }
+    blend(bg) {
+        if (this.alpha < 5)
+            return PixelColor.empty();
+        else if (this.alpha < 255) {
+            // blend into white. TODO user-selected bg color.
+            const a = (255 - this.alpha) / 255;
+            return new PixelColor(this.red + (bg.red - this.red) * a, this.green + (bg.green - this.green) * a, this.blue + (bg.blue - this.blue) * a, 255);
+        }
+        return this;
     }
     static fromOklab(ol, alpha) {
         const rgb = oklab_to_rgb(ol);
@@ -168,6 +179,9 @@ export class PaletteColor {
     withCount(newCount) {
         return new PaletteColor(this.threadColor, this.rawColors, this.index, newCount);
     }
+    withThreadColor(newThreadColor) {
+        return new PaletteColor(newThreadColor, this.rawColors, this.index, this.count);
+    }
     /**
      * Determines whether a color is represented by this palette color.
      */
@@ -186,10 +200,13 @@ export class PaletteColor {
             return `${this.index + 1}`;
         if (symbolStyle === "symbols") {
             const symbols = [
-                "\u25EF", // circle outline
-                "\u2605", // star
+                "\u25CB", // circle outline
+                // "\u25EF", // big circle outline
+                // "\u2605", // star
+                "\u2606", // star outline
                 "\u2661", // heart outline
-                "\u25B2", // BIG up-pointing triangle
+                // "\u25B2", // BIG up-pointing triangle
+                "\u25B3", // triangle outline
                 "+", // plus
                 "-", // minus
                 "~", // tilde

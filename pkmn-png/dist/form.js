@@ -22,10 +22,6 @@ function mountApp(names) {
                 loadingFailed.value = true;
                 loading.value = false;
             }
-            const randomize = function () {
-                name.value = names[Math.floor(Math.random() * names.length)];
-            };
-            randomize();
             const requestImages = function () {
                 loading.value = true;
                 const request = fetch(`https://pokeapi.co/api/v2/pokemon/${name.value}`);
@@ -43,6 +39,11 @@ function mountApp(names) {
                     .then(result => onSuccess(result[1]))
                     .catch(e => onFailed(e));
             };
+            const randomize = function () {
+                name.value = names[Math.floor(Math.random() * names.length)];
+                requestImages();
+            };
+            randomize();
             const generation = ref("4");
             return {
                 name,
@@ -61,7 +62,6 @@ function mountApp(names) {
         setup(props) {
             const { heading, data } = props;
             const generations = Object.keys(data);
-            console.log(`Headed ${heading}`);
             return {
                 generations,
             };

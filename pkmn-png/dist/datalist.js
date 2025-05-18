@@ -3,7 +3,10 @@ fetch("https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0")
     .then(async (response) => {
     var _a;
     const data = await response.json();
-    const names = data.results.map((datum) => datum.name);
+    const names = data.results.filter((datum) => {
+        console.log(datum);
+        return true;
+    }).map((datum) => datum.name);
     const dataList = document.createElement("datalist");
     dataList.setAttribute("id", "pokemonNames");
     for (const name of names) {
