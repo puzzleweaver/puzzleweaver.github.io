@@ -1,27 +1,33 @@
 :root {
   --background-color: rgb(172, 179, 212);
   --box-color: rgba(255, 255, 255, 0.3);
-  --link-color: blue;
-  --link-color-hovered: red;
-  --link-color-visited: green;
+  --link-color: #47507a;
+  --link-color-hovered: #6a79b8;
+  --link-color-visited: #69487a;
+  --link-color-hovered-visited: #885d9e;
 }
 
 @font-face {
-  font-family: Courier Prime;
-  src: url("/assets/fonts/courier-prime.ttf");
+  font-family: Nunito;
+  src: url("/assets/fonts/nunito.ttf");
 }
 body {
   background-color: var(--background-color);
   background-image: url("/assets/images/bg.webp");
   background-size: 20%;
-  image-rendering: pixelated;
   background-attachment: fixed;
-  /* font-family: "Courier Prime", monospace; */
+  image-rendering: pixelated;
+  font-family: "Nunito", monospace;
+  font-size: 1.25rem;
   /* font-family: "Comic Sans", monospace; */
   /* font-weight: 800; */
   /* font-style: normal; */
   margin-left: 5vw;
   margin-right: 5vh;
+}
+
+body > * {
+  image-rendering: smooth;
 }
 
 a {
@@ -37,17 +43,16 @@ a:hover {
   color: var(--link-color-hovered);
 }
 
-li::marker {
-  content: "- ";
+a:hover:visited {
+  color: var(--link-color-hovered-visited);
 }
 
-.ellipsis-overflow {
-  white-space: nowrap;
-  overflow: hidden;
-  list-style-position: inside;
-  text-overflow: ellipsis;
-}
-
+/* .ellipsis-overflow {
+	white-space: nowrap;
+	overflow: hidden;
+	list-style-position: inside;
+	text-overflow: ellipsis;
+} */
 .dimmed {
   color: rgba(0, 0, 0, 0.4);
 }
@@ -75,19 +80,22 @@ img {
   border: 3px solid var(--link-color);
   border-radius: 5px;
   gap: 0.5rem;
+  margin: 0.25rem;
   padding: 5px;
   background-color: var(--box-color);
+  justify-content: center;
+  align-items: center;
 }
 
 .card {
   display: inline-block;
   border: 3px solid var(--link-color);
   border-radius: 5px;
-  height: max(2em, min(10vw, 10vh));
+  height: 6em;
 }
 
 .card > img {
-  height: max(2em, min(10vw, 10vh));
+  height: 6em;
   border: none;
   border-radius: 0px;
   baseline: text-center;
@@ -118,6 +126,11 @@ img {
   border-color: var(--link-color-hovered);
 }
 
+.card:hover:visited,
+.link:hover:visited {
+  border-color: var(--link-color-hovered-visited);
+}
+
 .link > img {
   border: none;
   border-radius: 0px;
@@ -125,20 +138,18 @@ img {
 
 nav {
   background-color: var(--box-color);
-  /* background-image: url("/assets/images/fg.webp"); */
-  /* image-rendering: pixelated;
-  background-attachment: fixed; */
-  background-size: 20%;
-  background-repeat: xy;
   /* margin-top: 0px; */
   margin-bottom: 1em;
   padding: 1em;
   /* border: 3px solid black; */
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 footer {
-  margin-top: 4em;
+  background-color: var(--box-color);
+  margin-top: 1em;
+  padding: 1em;
+  border-radius: 10px;
 }
 
 @media (min-height: 60vh) {
