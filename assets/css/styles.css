@@ -65,7 +65,8 @@ a:hover:visited {
 	text-overflow: ellipsis;
 } */
 .dimmed {
-  color: rgba(0, 0, 0, 0.4);
+  /* color: rgba(0, 0, 0, 0.4); */
+  opacity: 50%;
 }
 
 img {
