@@ -15,55 +15,85 @@
 
 		<!-- Goat Counter, for analytics!! -->
 		<script data-goatcounter="https://waeaves.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+		<!-- guy that follows your mouse -->
+		<script src="/assets/js/guys.js"></script>
 	</head>
-	<body>
+	<body id="body">
 		<nav>
+
+	<!-- COVER IMAGE -->
+	
+
+	<!-- DATE -->
+	
+		<p>
+			<img class="icon" width="16" height="16" src="/assets/images/favicons/calendar.png"
+			alt="home" title="Home"/>
+			15 October 2025
+		</p>
+	
+
+	<!-- HIERARCHY BUTTONS -->
+	<p>
+		<a href="/">
+			<img class="icon" width="16" height="16" src="/assets/images/favicons/home.png"
+				alt="home" title="Home"/>
+			Home
+		</a>
+
+		
+			
+			· <a href="/projects.html">
+				<img class="icon" width="16" height="16" src="/assets/images/favicons/projects.png"
+					alt="projects icon" title="Projects"/>
+				Projects
+			</a>
+		
+	</p>
+
+	<!-- PAGE TITLE -->
 	<h1>
 		
-			<a href="/">Emma's Page</a>
-			/
+			<img class="icon" width="32" height="32" src="/assets/images/favicons/projects.png"
+				alt="home" title="Home"/>
 		
-
-		
-			<a href="/projects.html">Projects</a>
-			/
-		
-		<a href="">3D Printed Hexagonal Rush Hour</a>
+		3D Printed Hexagonal Rush Hour
 	</h1>
 
+	<!-- JAMS -->
 	
+		
 
 	
-		<h3>
-			29 October 2025
-		</h3>
+	
 	
 
+	<!-- LINKS -->
 	
-		<h3>
-			LINK:
+		<p>
+			Links:&nbsp;
 			
-				<a class="link" href="https://www.printables.com/model/1451757-hexagonal-rush-hour/files">
+				<a href="https://www.printables.com/model/1451757-hexagonal-rush-hour/files">
 	
-		<img height="16" width="16"
+		<img class="icon" height="16" width="16"
 			src='https://icons.duckduckgo.com/ip3/www.printables.com.ico'
 		/>
 	
 	Printables.com
 </a>
 
+				
 			
-		</h3>
+		</p>
 	
 </nav>
 
-		<p>Related to: <a href="/games/hex-rush-hour.html">Hexagonal Rush Hour (online)</a></p>
-
-<h2 id="what">What!</h2>
-
-<p><img src="/assets/images/projects/rush-hour-prints/complete.png" alt="Oblique view" />
+		<p><img src="/assets/images/projects/rush-hour-prints/complete.png" alt="Oblique view" />
 <img src="/assets/images/projects/rush-hour-prints/top-view.png" alt="Top view" />
 <img src="/assets/images/projects/rush-hour-prints/pieces.png" alt="Piece details" /></p>
+
+<p>Related to: <a href="/games/hex-rush-hour.html">Hexagonal Rush Hour (online)</a></p>
 
 <p>I designed this all with <a href="https://www.freecad.org/">FreeCAD</a> (love!). It was a slight adjustment at first, but once I grasped the quirks of its constraint system (basically just: constrain as minimally as possible to avoid overconstraining), it was really wonderful to work with!</p>
 
@@ -75,7 +105,7 @@
 
 <p><img src="/assets/images/projects/rush-hour-prints/hex-dimensions.png" alt="Complexity of hexagonal grids" title="Complexity of hexagonal grids" class="expanded-image" /></p>
 
-<p>A hexagonal grid has these two dimensions, which are related <strong>but distinct</strong>: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span> between the centers of the hexagons and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">2</span><span class="mclose">)</span></span></span></span> between the “files” of hexagons. On a square grid they would be identical, so I struggled a little to mentally separate them. I messed it up a few times before getting everything right. Ultimately, for this project I set <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">2</span><span class="mclose">)</span></span></span></span> to be <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>15</mn><mtext>mm</mtext></mrow><annotation encoding="application/x-tex">15\text{mm}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">5</span><span class="mord text"><span class="mord">mm</span></span></span></span></span>, which meant <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span> needed to be <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>2</mn><msqrt><mn>3</mn></msqrt></mfrac><mo>⋅</mo><mn>15</mn><mtext>mm</mtext><mo>≈</mo><mn>17.32</mn><mtext>mm</mtext></mrow><annotation encoding="application/x-tex">\frac{2}{\sqrt{3}} \cdot 15\text{mm} \approx 17.32\text{mm}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.383108em;vertical-align:-0.5379999999999999em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.5510085em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord sqrt mtight"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.912845em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mtight" style="padding-left:0.833em;"><span class="mord mtight">3</span></span></span><span style="top:-2.872845em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail mtight" style="min-width:0.853em;height:1.08em;"><svg width="400em" height="1.08em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702 c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14 c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54 c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10 s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429 c69,-144,104.5,-217.7,106.5,-221 l0 -0 c5.3,-9.3,12,-14,20,-14 H400000v40H845.2724 s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7 c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z M834 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.12715500000000002em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.5379999999999999em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">5</span><span class="mord text"><span class="mord">mm</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">7</span><span class="mord">.</span><span class="mord">3</span><span class="mord">2</span><span class="mord text"><span class="mord">mm</span></span></span></span></span>. Once I figured this out, everything went swimmingly!</p>
+<p>A hexagonal grid has these two dimensions, which are <strong>related but distinct</strong>: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span> between the centers of the hexagons and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">2</span><span class="mclose">)</span></span></span></span> between the “files” of hexagons. On a square grid they would be identical, so I struggled a little to mentally separate them. I messed it up a few times before getting everything right. Ultimately, for this project I set <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">2</span><span class="mclose">)</span></span></span></span> to be <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>15</mn><mtext>mm</mtext></mrow><annotation encoding="application/x-tex">15\text{mm}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">5</span><span class="mord text"><span class="mord">mm</span></span></span></span></span>, which meant <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span> needed to be <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>2</mn><msqrt><mn>3</mn></msqrt></mfrac><mo>⋅</mo><mn>15</mn><mtext>mm</mtext><mo>≈</mo><mn>17.32</mn><mtext>mm</mtext></mrow><annotation encoding="application/x-tex">\frac{2}{\sqrt{3}} \cdot 15\text{mm} \approx 17.32\text{mm}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.383108em;vertical-align:-0.5379999999999999em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.5510085em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord sqrt mtight"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.912845em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mtight" style="padding-left:0.833em;"><span class="mord mtight">3</span></span></span><span style="top:-2.872845em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail mtight" style="min-width:0.853em;height:1.08em;"><svg width="400em" height="1.08em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702 c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14 c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54 c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10 s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429 c69,-144,104.5,-217.7,106.5,-221 l0 -0 c5.3,-9.3,12,-14,20,-14 H400000v40H845.2724 s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7 c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z M834 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.12715500000000002em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.5379999999999999em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">5</span><span class="mord text"><span class="mord">mm</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">7</span><span class="mord">.</span><span class="mord">3</span><span class="mord">2</span><span class="mord text"><span class="mord">mm</span></span></span></span></span>. Once I figured this out, everything went swimmingly!</p>
 
 <p>Another thing I figured out, was the importance of minimizing the surfaces that are in contact between moving parts (in this case, the boats and the knobs of the board). I made the following change:</p>
 
@@ -88,18 +118,8 @@
 <p>For the actual printing, I absolutely FELL IN LOVE with the process of 3d printing. I love sitting next to a printer as it sings its little fabrication song.. I dream of a public workspace that has an area for 3d printers to fill the space with that beautiful music.</p>
 
 
-		<footer class="dimmed">
-	>.>
-	&nbsp;&nbsp;
-	<a class="link" href="/projects.html">
-		Projects
-	</a>
-	<a class="link" href="/posts.html">
-		Posts
-	</a>
-	<a class="link" href="/games.html">
-		Games
-	</a>
+		<footer>
+	The end @.@
 </footer>
 
 	</body>

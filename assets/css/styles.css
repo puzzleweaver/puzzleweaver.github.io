@@ -1,10 +1,20 @@
 :root {
-  --background-color: rgb(172, 179, 212);
-  --box-color: rgba(255, 255, 255, 0.3);
-  --link-color: #47507a;
-  --link-color-hovered: #6a79b8;
-  --link-color-visited: #69487a;
-  --link-color-hovered-visited: #885d9e;
+  --background-color1: #ffeccf;
+  --background-color2: #ffe9fb;
+  --background-gradient: linear-gradient(to bottom, #ffeccf, #ffe9fb);
+  --box-color: rgba(255, 255, 255, 0.5);
+  --link-color: #006aff;
+  --link-color-hovered: #00bfff;
+  --link-color-visited: #a8149b;
+  --link-color-hovered-visited: #ff1ceb;
+}
+
+nav > p {
+  margin: 0px;
+}
+
+nav > h1 {
+  margin: 0px;
 }
 
 @font-face {
@@ -12,13 +22,14 @@
   src: url("/assets/fonts/nunito.ttf");
 }
 body {
-  background-color: var(--background-color);
-  background-image: url("/assets/images/bg.webp");
+  background: var(--background-color1);
+  background-image: url("/assets/images/bg.webp"); /* fallback */
+  background-image: url("/assets/images/bg.webp"), linear-gradient(to bottom, #ffeccf, #ffe9fb);
   background-size: 20%;
   background-attachment: fixed;
   image-rendering: pixelated;
   font-family: "Nunito", monospace;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   /* font-family: "Comic Sans", monospace; */
   /* font-weight: 800; */
   /* font-style: normal; */
@@ -64,10 +75,11 @@ img {
 }
 
 .header-image {
-  float: left;
-  height: 6em;
+  float: right;
+  height: 10em;
   margin: 10px;
   margin-top: -10px;
+  image-rendering: pixelated;
 }
 
 .expanded-image {
@@ -85,6 +97,10 @@ img {
   background-color: var(--box-color);
   justify-content: center;
   align-items: center;
+}
+
+a:hover > img {
+  filter: brightness(130%);
 }
 
 .card {
@@ -116,24 +132,23 @@ img {
   baseline: text-center;
 }
 
-.card:visited,
-.link:visited {
+.card:visited {
   border-color: var(--link-color-visited);
 }
 
-.card:hover,
-.link:hover {
+.card:hover {
   border-color: var(--link-color-hovered);
 }
 
-.card:hover:visited,
-.link:hover:visited {
+.card:hover:visited {
   border-color: var(--link-color-hovered-visited);
 }
 
-.link > img {
+.icon {
   border: none;
   border-radius: 0px;
+  image-rendering: pixelated;
+  margin-bottom: -0.05em;
 }
 
 nav {
@@ -150,6 +165,20 @@ footer {
   margin-top: 1em;
   padding: 1em;
   border-radius: 10px;
+}
+
+table {
+  border: 5px solid var(--box-color);
+}
+
+th {
+  background-color: var(--box-color);
+  padding: 0.2em;
+}
+
+td {
+  border: 2px solid var(--box-color);
+  padding: 0.2em;
 }
 
 @media (min-height: 60vh) {

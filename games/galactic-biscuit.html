@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Galactic Biscuit</title>
+
+		<!-- css -->
+		<link rel="stylesheet" href="/assets/css/styles.css">
+
+		<!-- favicon -->
+		<link rel="icon" href="/assets/images/favicons/favicon.png">
+
+		<!-- katex, for properly displaying rendered math -->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+
+		<!-- Goat Counter, for analytics!! -->
+		<script data-goatcounter="https://waeaves.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+		<!-- guy that follows your mouse -->
+		<script src="/assets/js/guys.js"></script>
+	</head>
+	<body id="body">
+		<nav>
+
+	<!-- COVER IMAGE -->
+	
+		<img class="header-image" src="/assets/images/games/galactic-biscuit/cover.png"/>
+	
+
+	<!-- DATE -->
+	
+		<p>
+			<img class="icon" width="16" height="16" src="/assets/images/favicons/calendar.png"
+			alt="home" title="Home"/>
+			31 October 2025
+		</p>
+	
+
+	<!-- HIERARCHY BUTTONS -->
+	<p>
+		<a href="/">
+			<img class="icon" width="16" height="16" src="/assets/images/favicons/home.png"
+				alt="home" title="Home"/>
+			Home
+		</a>
+
+		
+			
+			· <a href="/games.html">
+				<img class="icon" width="16" height="16" src="/assets/images/favicons/games.png"
+					alt="games icon" title="Games"/>
+				Games
+			</a>
+		
+	</p>
+
+	<!-- PAGE TITLE -->
+	<h1>
+		
+			<img class="icon" width="32" height="32" src="/assets/images/favicons/games.png"
+				alt="home" title="Home"/>
+		
+		Galactic Biscuit
+	</h1>
+
+	<!-- JAMS -->
+	
+		
+
+	
+	
+	
+		<p>
+			Submission to <a href="https://itch.io/jam/cookie-jam-w">Cookie Jam 1</a>
+			<br>
+			Based on themes
+			<b>
+			Cookie</b> and <b>Space</b>.
+		</p>
+	
+
+	<!-- LINKS -->
+	
+		<p>
+			Links:&nbsp;
+			
+				<a href="https://quail-weaver.itch.io/galactic-biscuit"">
+	
+		<img class="icon" height="16" width="16" src='/assets/images/favicons/itch.ico' />
+	
+	Itch page
+</a>
+
+				
+			
+		</p>
+	
+</nav>
+
+		<p><img src="/assets/images/games/galactic-biscuit/gameplay.gif" alt="Gameplay" title="Gameplay sample" class="expanded-image" />
+<img src="/assets/images/games/galactic-biscuit/milk.gif" alt="Milk" title="A glass of milk" class="expanded-image" /></p>
+
+<p>This isn’t really a complete game, it’s more of a tech demo for platformer basics. A couple of things I learned:</p>
+
+<ul>
+  <li>
+    <p>If you want to step forward by some time step <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">dt</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">d</span><span class="mord mathdefault">t</span></span></span></span>, doing 2 to 4 substeps instead with <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><mi>t</mi></mrow><mrow><mo stretchy="false">(</mo><mn>2</mn><mtext> to </mtext><mn>4</mn><mo stretchy="false">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{dt}{(2\text{ to }4)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.400108em;vertical-align:-0.52em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8801079999999999em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mtight">2</span><span class="mord text mtight"><span class="mord mtight"> to </span></span><span class="mord mtight">4</span><span class="mclose mtight">)</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">d</span><span class="mord mathdefault mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.52em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span> can make collision resolution more stable. I remember hearing somewhere that this is how Super Mario 64 and Super Mario Sunshine work.</p>
+  </li>
+  <li>
+    <p>It’s possible to reduce visual jank by rendering things by keeping a separate logical position (used for collisions, physics, etc) and rendering position that smoothly approaches the logical position. This makes it so that, for example if the underlying physics has something snapping 20 pixels back and forth every frame, the object will simply appear to sit in the middle.</p>
+  </li>
+  <li>
+    <p>To stably detect if things are grounded, instead of setting their velocity to 0 on a “stopping” type collision, set it to a very small amount pushing into the object. This way it will be easily overcome by other physics interactions, but the player will stay colliding with the ground every frame in absence of other forces.</p>
+  </li>
+  <li>
+    <p>To create moving platforms that the player can stand on/jump off of/etc, simply resolve the collisions the same way you would as with any other block, but whenever the player is colliding with the moving platform, add the platform’s velocity directly to the player’s position. This method had results that felt natural and correct to me.</p>
+  </li>
+</ul>
+
+<p><img src="/assets/images/games/galactic-biscuit/blockroach.gif" alt="Blockroach dynamics" title="Riding a blockroach" class="expanded-image" /></p>
+
+
+		<footer>
+	The end :^)
+</footer>
+
+	</body>
+</html>
