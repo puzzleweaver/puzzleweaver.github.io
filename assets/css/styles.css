@@ -150,6 +150,8 @@ a:hover > img {
   border-radius: 0px;
   image-rendering: pixelated;
   margin-bottom: -0.05em;
+  width: 1em;
+  height: 1em;
 }
 
 nav {

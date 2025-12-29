@@ -3,16 +3,17 @@
   <channel>
     <title></title>
     <description></description>
-    <link>/</link>
-    <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 13 Nov 2025 10:06:12 -0600</pubDate>
-    <lastBuildDate>Thu, 13 Nov 2025 10:06:12 -0600</lastBuildDate>
+    <link>waeaves.com/</link>
+    <atom:link href="waeaves.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Mon, 29 Dec 2025 13:46:20 -0500</pubDate>
+    <lastBuildDate>Mon, 29 Dec 2025 13:46:20 -0500</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
+
     
-    
-      <item>
-        <title>Welcome to Jekyll, my bedraggled website</title>
-        <description>&lt;h1 id=&quot;hello-&quot;&gt;Hello :)&lt;/h1&gt;
+	    
+	      <item>
+	        <title>Welcome to Jekyll, my bedraggled website</title>
+	        <description>&lt;h1 id=&quot;hello-&quot;&gt;Hello :)&lt;/h1&gt;
 
 &lt;p&gt;This is my website :3 New and improved but with all that same Crunchy Geocities Charm :-)&lt;/p&gt;
 
@@ -30,18 +31,20 @@
 
 &lt;p&gt;So yeah, past that it was dead-simple to port things over, it only took me about two days to get Jekyll working and my old content ported over, and I’m looking forward to all the fun new types of stuff I can handle with the new framework! Like wordyposts like this one :)&lt;/p&gt;
 </description>
-        <pubDate>Fri, 24 Oct 2025 00:00:00 -0500</pubDate>
-        <link>/2025/10/24/welcome-to-jekyll.html</link>
-        <guid isPermaLink="true">/2025/10/24/welcome-to-jekyll.html</guid>
-        
-        
-      </item>
-      
+	        <pubDate>Fri, 24 Oct 2025 00:00:00 -0400</pubDate>
+	        <link>waeaves.com/2025/10/24/welcome-to-jekyll.html</link>
+	        <guid isPermaLink="true">waeaves.com/2025/10/24/welcome-to-jekyll.html</guid>
+
+	        
+
+	        
+	      </item>
+    	
     
-    
-      <item>
-        <title>Cult of Done manifesto</title>
-        <description>&lt;p&gt;I was introduced to the Cult of Done Manifesto by my friend &lt;a href=&quot;https://hyperduck.org/&quot;&gt;Alice&lt;/a&gt;. Thanks Alice! I learned about it while I was working on &lt;a href=&quot;/games/fifteent.html&quot;&gt;Fifteent&lt;/a&gt; and my &lt;a href=&quot;/projects/pattern-generator.html&quot;&gt;Pattern Generator&lt;/a&gt;, my first projects post-&lt;a href=&quot;/games/chness.html&quot;&gt;Chness&lt;/a&gt;. I’d like to think I’ve taken it to heart, and looking back I think I’ve worked almost every one of these principles into my mode of operation :v&lt;/p&gt;
+	    
+	      <item>
+	        <title>Cult of Done manifesto</title>
+	        <description>&lt;p&gt;I was introduced to the Cult of Done Manifesto by my friend &lt;a href=&quot;https://hyperduck.org/&quot;&gt;Alice&lt;/a&gt;. Thanks Alice! I learned about it while I was working on &lt;a href=&quot;/games/fifteent.html&quot;&gt;Fifteent&lt;/a&gt; and my &lt;a href=&quot;/projects/pattern-generator.html&quot;&gt;Pattern Generator&lt;/a&gt;, my first projects post-&lt;a href=&quot;/games/chness.html&quot;&gt;Chness&lt;/a&gt;. I’d like to think I’ve taken it to heart, and looking back I think I’ve worked almost every one of these principles into my mode of operation :v&lt;/p&gt;
 
 &lt;p&gt;About the manifesto itself, I absolutely LOVE the ideas it presents. But, I found the original version to be pretty wordy and hard to understand (maybe… they should have edited it a little more 😂). To the point that I had to go through and reword each point myself to really Get all of it! I had also at first separated it out into Facts and Imperatives but retrospectively I think doing so interupts its flow, so I redid it to try to preserve the original’s vibe, but to try to optimize its readability and clarity.&lt;/p&gt;
 
@@ -67,13 +70,16 @@
 
 &lt;p&gt;&lt;span style=&quot;color: green&quot;&gt;&lt;strong&gt;Done!&lt;/strong&gt;&lt;/span&gt; :3&lt;/p&gt;
 </description>
-        <pubDate>Fri, 04 Apr 2025 00:00:00 -0500</pubDate>
-        <link>/2025/04/04/cult-of-done.html</link>
-        <guid isPermaLink="true">/2025/04/04/cult-of-done.html</guid>
-        
-        
-      </item>
-      
+	        <pubDate>Fri, 04 Apr 2025 00:00:00 -0400</pubDate>
+	        <link>waeaves.com/2025/04/04/cult-of-done.html</link>
+	        <guid isPermaLink="true">waeaves.com/2025/04/04/cult-of-done.html</guid>
+
+	        
+
+	        
+	      </item>
+    	
     
+
   </channel>
 </rss>
