@@ -9,6 +9,10 @@
   --link-color-hovered-visited: #ff1ceb;
 }
 
+.selected {
+  font-weight: bold;
+}
+
 nav > p {
   margin: 0px;
 }
@@ -70,7 +74,7 @@ a:hover:visited {
 }
 
 img {
-  max-height: 15em;
+  max-height: 10em;
   border: 3px solid black;
   border-radius: 5px;
 }
@@ -84,20 +88,21 @@ img {
 }
 
 .expanded-image {
-  height: 15em;
+  height: 8em;
   image-rendering: pixelated;
 }
 
 .link {
-  display: inline-flex;
-  border: 3px solid var(--link-color);
-  border-radius: 5px;
-  gap: 0.5rem;
-  margin: 0.25rem;
-  padding: 5px;
-  background-color: var(--box-color);
+  width: 1em;
+  height: 1em;
   justify-content: center;
   align-items: center;
+  display: inline-flex;
+  gap: 0.5rem;
+  margin: 0.25rem;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: var(--box-color);
 }
 
 a:hover > img {
@@ -108,14 +113,18 @@ a:hover > img {
   display: inline-block;
   border: 3px solid var(--link-color);
   border-radius: 5px;
-  height: 6em;
+  margin: 5px;
 }
 
 .card > img {
-  height: 6em;
   border: none;
   border-radius: 0px;
   baseline: text-center;
+}
+
+.card,
+.card > img {
+  height: 8em;
 }
 
 .big-card {
@@ -154,6 +163,7 @@ a:hover > img {
   height: 1em;
 }
 
+.box,
 nav {
   background-color: var(--box-color);
   /* margin-top: 0px; */
@@ -161,6 +171,11 @@ nav {
   padding: 1em;
   /* border: 3px solid black; */
   border-radius: 10px;
+}
+
+.box {
+  margin-right: 3%;
+  margin-left: 3%;
 }
 
 footer {
